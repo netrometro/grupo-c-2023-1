@@ -1,6 +1,6 @@
 import { prisma } from "../../prisma";
 import { IAnimalsRepository } from "../i-animals-repository";
-import { Animal, Prisma } from "@prisma/client";
+import { $Enums, Animal, Prisma } from "@prisma/client";
 
 export class AnimalRepository implements IAnimalsRepository {
 
@@ -17,6 +17,26 @@ export class AnimalRepository implements IAnimalsRepository {
             where: {
                 id: animalId
             }
+        });
+
+        return animal;
+    }
+
+    async findBySpecie(specie: string) {
+
+        const animal = await prisma.animal.findUnique({
+            where: {
+                specie_name: specie
+            }
+        })
+
+        return animal;
+    };
+
+    async create(animalDto: Prisma.AnimalCreateInput) {
+        
+        const animal = await prisma.animal.create({
+            data: animalDto
         });
 
         return animal;
