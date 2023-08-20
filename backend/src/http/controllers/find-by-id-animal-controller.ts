@@ -8,11 +8,11 @@ export async function findByIdAnimalController(request: FastifyRequest, response
 
 
 
-    const findByAnimalValidationSchema = z.object({
+    const findByIdAnimalValidationSchema = z.object({
         id: z.coerce.number().int()
     })
 
-    const { id } = findByAnimalValidationSchema.parse(request.params);
+    const { id } = findByIdAnimalValidationSchema.parse(request.params);
 
     try {
         const animalRepository = new AnimalRepository();
@@ -22,7 +22,9 @@ export async function findByIdAnimalController(request: FastifyRequest, response
         return response.send(animal);
     } catch (error) {
         if (error instanceof ErrorAnimalNotExists) {
-            return response.code(404).send({message: error.message});
+            return response.code(404).send({
+                message: error.message
+            });
         }
     }
 
