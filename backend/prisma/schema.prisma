@@ -12,6 +12,7 @@ datasource db {
 
 model Animal {
   id                  Int                @id @default(autoincrement())
+  name                String
   specie_name         String             @unique
   size                Int
   conservation_status ConservationStatus
@@ -75,6 +76,5 @@ model Like {
   post_id Int
 
   @@id([user_id, post_id])
-
   @@map("likes")
 }
