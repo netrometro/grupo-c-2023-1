@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/server.js",
     "test": "vitest",
-    "dev": "npx tsx --watch src/server.ts"
+    "dev": "npx tsx src/server.ts",
+    "build": "tsup src"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +15,7 @@
   "devDependencies": {
     "@types/node": "^20.5.0",
     "prisma": "^5.1.1",
+    "tsup": "^7.2.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6",
     "vitest": "^0.34.2"

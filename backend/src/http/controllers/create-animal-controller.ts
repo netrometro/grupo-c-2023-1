@@ -40,7 +40,7 @@ export async function createAnimalController(request: FastifyRequest, response: 
             }
         })
 
-        return response.code(201).send({ animal });
+        return response.code(201).send(animal);
     } catch (error) {
         if (error instanceof ErrorAnimalAlreadyExists) {
             return response.code(404).send({
