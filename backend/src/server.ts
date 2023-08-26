@@ -30,6 +30,6 @@ app.setErrorHandler((error, _, res) => {
 });
 
 app.listen({
-    port: env.PORT,
+    port: 6906,
     host: "0.0.0.0"
 }).then(server => { console.log(`HTTP server running at ${server}`) });
