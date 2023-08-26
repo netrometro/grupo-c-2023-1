@@ -2,8 +2,13 @@ import fastify from "fastify";
 import { appRouter } from "./http/router";
 import { ZodError } from "zod";
 import cors from "@fastify/cors";
+import fastifyMultipart from "@fastify/multipart";
 
-const app = fastify()
+const app = fastify({
+    
+})
+
+app.register(fastifyMultipart)
 
 app.register(appRouter)
 
@@ -14,6 +19,10 @@ app.setErrorHandler((error, _, res) => {
       return res
         .status(422)
         .send({ message: 'Validation error.', issues: error.format() })
+    }
+
+    if (error.code === "FST_INVALID_MULTIPART_CONTENT_TYPE") {
+        return res.status(406).send({ message: 'Please, use a form-data multipart.' })
     }
 
     console.log(error)
