@@ -29,4 +29,6 @@ app.setErrorHandler((error, _, res) => {
     return res.status(500).send({ message: 'Internal server error.' })
 });
 
-app.listen().then(server => { console.log(`HTTP server running at ${server}`) });
+app.listen({
+    host: "0.0.0.0"
+}).then(server => { console.log(`HTTP server running at ${server}`) });
