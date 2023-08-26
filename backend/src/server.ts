@@ -29,7 +29,4 @@ app.setErrorHandler((error, _, res) => {
     return res.status(500).send({ message: 'Internal server error.' })
 });
 
-app.listen({
-    port: 6906,
-    host: "0.0.0.0"
-}).then(server => { console.log(`HTTP server running at ${server}`) });
+app.listen().then(server => { console.log(`HTTP server running at ${server}`) });
