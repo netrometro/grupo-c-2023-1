@@ -5,9 +5,7 @@ import cors from "@fastify/cors";
 import fastifyMultipart from "@fastify/multipart";
 import { env } from "./env";
 
-const app = fastify({
-    
-})
+const app = fastify()
 
 app.register(fastifyMultipart)
 
