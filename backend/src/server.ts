@@ -3,6 +3,7 @@ import { appRouter } from "./http/router";
 import { ZodError } from "zod";
 import cors from "@fastify/cors";
 import fastifyMultipart from "@fastify/multipart";
+import { env } from "./env";
 
 const app = fastify({
     
@@ -31,5 +32,5 @@ app.setErrorHandler((error, _, res) => {
 });
 
 app.listen({
-    port: 8080
+    port: env.PORT
 }).then(server => { console.log(`HTTP server running at ${server}`) });
