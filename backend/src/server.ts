@@ -30,5 +30,6 @@ app.setErrorHandler((error, _, res) => {
 });
 
 app.listen({
-    host: "0.0.0.0"
+    host: "0.0.0.0",
+    path: "/"
 }).then(server => { console.log(`HTTP server running at ${server}`) });
