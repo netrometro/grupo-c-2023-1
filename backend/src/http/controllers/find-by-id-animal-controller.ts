@@ -5,9 +5,6 @@ import { FindByIdAnimalUseCase } from "../../use-cases/find-by-id-animal/find-by
 import { ErrorAnimalNotExists } from "../../use-cases/find-by-id-animal/erros";
 
 export async function findByIdAnimalController(request: FastifyRequest, response: FastifyReply) {
-
-
-
     const findByIdAnimalValidationSchema = z.object({
         id: z.coerce.number().int()
     })
@@ -19,7 +16,22 @@ export async function findByIdAnimalController(request: FastifyRequest, response
         const findByidAnimalUseCase = new FindByIdAnimalUseCase(animalRepository);
         const animal = await findByidAnimalUseCase.handle({ animalId: id });
 
-        return response.send(animal);
+        const animalSchema = z.object({
+            id: z.number(),
+            size: z.number(),
+            name: z.string(),
+            specie_name: z.string(),
+            conservation_status: z.string(),
+            ecological_function: z.string(),
+            url_image: z.string(),
+            threat_causes: z.array(z.object({
+                description: z.string()
+            })).transform(threat_causes => threat_causes.map(cause => cause.description))
+        })
+
+        const retrievedAnimal = animalSchema.parse(animal.animal)
+
+        return response.send({ animal: retrievedAnimal });
     } catch (error) {
         if (error instanceof ErrorAnimalNotExists) {
             return response.code(404).send({

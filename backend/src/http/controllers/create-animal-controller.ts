@@ -18,6 +18,10 @@ export async function createAnimalController(request: FastifyRequest, response: 
             mimetype: z.string().refine(mimetype => mimetype === "text/plain"),
             value: z.string()
         }),
+        threat_causes: z.object({
+            mimetype: z.string().refine(mimetype => mimetype === "text/plain"),
+            value: z.string().transform(threat_causes => threat_causes.trim().split(","))
+        }),
         specie_name: z.object({
             mimetype: z.string().refine(mimetype => mimetype === "text/plain"),
             value: z.string()
@@ -42,6 +46,7 @@ export async function createAnimalController(request: FastifyRequest, response: 
         size: { value: sizeValue },
         conservation_status: { value: conservationStatusValue },
         ecological_function: { value: ecologicalFunctionValue },
+        threat_causes: { value: causesArray }
     } = createAnimalValidationFieldsSchema.parse(data.fields);
 
     z.enum(["image/png", "image/jpeg"]).parse(data.mimetype)
@@ -56,10 +61,26 @@ export async function createAnimalController(request: FastifyRequest, response: 
             ecological_function: ecologicalFunctionValue,
             size: sizeValue,
             specie_name: specieNameValue,
-            fileData: data
+            fileData: data,
+            threat_causes: causesArray
         })
 
-        return response.code(201).send(animal);
+        const animalSchema = z.object({
+            id: z.number(),
+            size: z.number(),
+            name: z.string(),
+            specie_name: z.string(),
+            conservation_status: z.string(),
+            ecological_function: z.string(),
+            url_image: z.string(),
+            threat_causes: z.array(z.object({
+                description: z.string()
+            })).transform(threat_causes => threat_causes.map(cause => cause.description))
+        })
+
+        const retrievedAnimal = animalSchema.parse(animal.animal)
+
+        return response.code(201).send({ animal: retrievedAnimal });
     } catch (error) {
         if (error instanceof ErrorAnimalAlreadyExists) {
             return response.code(404).send({
