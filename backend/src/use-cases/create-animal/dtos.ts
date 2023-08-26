@@ -1,7 +1,13 @@
-import { Animal, Prisma } from "@prisma/client";
+import { MultipartFile } from "@fastify/multipart";
+import { Animal, ConservationStatus } from "@prisma/client";
 
 export interface CreateAnimalUseCaseRequest {
-    animalDto: Prisma.AnimalCreateInput
+    name: string
+    specie_name: string
+    size: number
+    conservation_status: ConservationStatus
+    ecological_function: string
+    fileData: MultipartFile
 }
 
 export interface CreateAnimalUseCaseResponse {

@@ -6,38 +6,57 @@ import { CreateAnimalUseCase } from "../../use-cases/create-animal/create-animal
 import { ErrorAnimalAlreadyExists } from "../../use-cases/create-animal/errors";
 
 export async function createAnimalController(request: FastifyRequest, response: FastifyReply) {
+    const data = await request.file()
 
-    const createAnimalValidationSchema = z.object({
-        name: z.string(),
-        specie_name: z.string(),
-        size: z.coerce.number().int(),
-        conservation_status: z.nativeEnum(ConservationStatus),
-        ecological_function: z.string(),
-        url_image: z.string().url()
+    if (!data) return response.status(400).send({
+        message: "Please, submit a file"
+    })
+
+
+    const createAnimalValidationFieldsSchema = z.object({
+        name: z.object({
+            mimetype: z.string().refine(mimetype => mimetype === "text/plain"),
+            value: z.string()
+        }),
+        specie_name: z.object({
+            mimetype: z.string().refine(mimetype => mimetype === "text/plain"),
+            value: z.string()
+        }),
+        size: z.object({
+            mimetype: z.string().refine(mimetype => mimetype === "text/plain"),
+            value: z.coerce.number().int()
+        }),
+        conservation_status: z.object({
+            mimetype: z.string().refine(mimetype => mimetype === "text/plain"),
+            value: z.nativeEnum(ConservationStatus)
+        }),
+        ecological_function: z.object({
+            mimetype: z.string().refine(mimetype => mimetype === "text/plain"),
+            value: z.string()
+        })
     })
 
     const {
-        name,
-        specie_name,
-        size,
-        conservation_status,
-        ecological_function,
-        url_image
-    } = createAnimalValidationSchema.parse(request.body);
+        name: { value: nameValue },
+        specie_name: { value: specieNameValue },
+        size: { value: sizeValue },
+        conservation_status: { value: conservationStatusValue },
+        ecological_function: { value: ecologicalFunctionValue },
+    } = createAnimalValidationFieldsSchema.parse(data.fields);
+
+    z.enum(["image/png", "image/jpeg"]).parse(data.mimetype)
 
     try {
         const animalRepository = new AnimalRepository();
         const createAnimalUseCase = new CreateAnimalUseCase(animalRepository);
 
         const animal = await createAnimalUseCase.handle({
-            animalDto: {
-                name,
-                specie_name,
-                size,
-                conservation_status,
-                ecological_function,
-                url_image
-            }
+            name: nameValue,
+            conservation_status: conservationStatusValue,
+            ecological_function: ecologicalFunctionValue,
+            size: sizeValue,
+            specie_name: specieNameValue,
+            fileData: data
         })
 
         return response.code(201).send(animal);
