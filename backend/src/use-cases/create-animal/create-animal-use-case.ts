@@ -22,7 +22,7 @@ export class CreateAnimalUseCase {
             throw new ErrorAnimalAlreadyExists();
         }
 
-        const fileName = randomBytes(10).toString('hex') + ".png"
+        const fileName = randomBytes(10).toString('hex') + fileData.mimetype.slice(6)
 
         await supabase.storage.from("balde-de-agua").upload(`animals/${fileName}`, fileData.file, {
             duplex: 'half',

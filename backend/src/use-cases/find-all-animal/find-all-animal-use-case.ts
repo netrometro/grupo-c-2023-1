@@ -1,8 +1,8 @@
-import { AnimalRepository } from "../../repository/prisma/prisma-animals-repository";
+import { IAnimalsRepository } from "../../repository/i-animals-repository";
 import { FindAllAnimalUseCaseResponse } from "./dtos";
 
 export class FindAllAnimalUseCase {
-    constructor(private animalRepository: AnimalRepository) {}
+    constructor(private animalRepository: IAnimalsRepository) {}
 
     async handle(): Promise<FindAllAnimalUseCaseResponse> {
         const animals = await this.animalRepository.findAll();
