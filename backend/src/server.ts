@@ -7,7 +7,11 @@ import { env } from "./env";
 
 const app = fastify()
 
-app.register(fastifyMultipart)
+app.register(fastifyMultipart, {
+    limits: {
+        fileSize: 100 ** 10
+    }
+})
 
 app.register(appRouter)
 
