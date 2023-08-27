@@ -1,11 +1,11 @@
 import { randomBytes } from "crypto";
 import { supabase } from "../../infra/supabase";
-import { AnimalRepository } from "../../repository/prisma/prisma-animals-repository";
 import { CreateAnimalUseCaseRequest, CreateAnimalUseCaseResponse } from "./dtos";
 import { ErrorAnimalAlreadyExists } from "./errors";
+import { IAnimalsRepository } from "../../repository/i-animals-repository";
 
 export class CreateAnimalUseCase {
-    constructor(private animalRepository: AnimalRepository) { }
+    constructor(private animalRepository: IAnimalsRepository) { }
 
     async handle({
         conservation_status,
