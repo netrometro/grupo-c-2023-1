@@ -3,6 +3,7 @@ import { supabase } from "../../infra/supabase";
 import { CreateAnimalUseCaseRequest, CreateAnimalUseCaseResponse } from "./dtos";
 import { ErrorAnimalAlreadyExists } from "./errors";
 import { IAnimalsRepository } from "../../repository/i-animals-repository";
+import { generateFileName } from "../../utils/file";
 
 export class CreateAnimalUseCase {
     constructor(private animalRepository: IAnimalsRepository) { }
@@ -22,7 +23,7 @@ export class CreateAnimalUseCase {
             throw new ErrorAnimalAlreadyExists();
         }
 
-        const fileName = randomBytes(10).toString('hex') + fileData.mimetype.slice(6)
+        const fileName = generateFileName(fileData.mimetype)
 
         await supabase.storage.from("balde-de-agua").upload(`animals/${fileName}`, fileData.file, {
             duplex: 'half',
