@@ -1,11 +1,20 @@
 import { View, Image, ScrollView, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { Picker } from "@react-native-picker/picker";
 import { styles } from "./styles";
-import { Button } from "../../components/button";
-import { AntDesign } from "@expo/vector-icons";
-import axios from "axios";
 import { api } from "../../api";
+import { Point } from "../../components/point";
+
+const ConservationStatusColor = {
+  EXTINCT: { name: "Extinto", color: "#ff0000" },
+  EXTINCT_IN_THE_WILD: { name: "Extinto na Selva", color: "#ff0000" },
+  CRITICAL_ENDANGERED: { name: "Perigo", color: "#ff0000" },
+  ENDANGERED: { name: "Ameaçado", color: "#ff0000" },
+  VULNERABLE: { name: "Vulnerável", color: "#ff0000" },
+  NEAR_THREATENED: { name: "Quase Ameaçado", color: "#ff0000" },
+  LEAST_CONCERN: { name: "Menor Precupação", color: "#ff0000" },
+  DATA_DEFICIENT: { name: "Dados Deficientes", color: "#ff0000" },
+  NOT_AVALUATED: { name: "Não Avaliado", color: "#ff0000" },
+};
 
 export function AnimalInfor(props: any) {
   const id = props.route.params.id;
@@ -14,9 +23,9 @@ export function AnimalInfor(props: any) {
   const [size, setSize] = useState(0);
   const [conservation, setConservation] =
     useState<ConservationStatus>("NOT_AVALUATED");
-  const [ecologicalFunction, setEcologicalFunction] = useState("bhgdhgsdoyih");
+  const [ecologicalFunction, setEcologicalFunction] = useState("");
   const [urlImage, setUrlImage] = useState();
-  // const [threatCauses, setThreatCauses] = useState();
+  const [threatCauses, setThreatCauses] = useState([]);
 
   async function getAnimal() {
     await api.get(`/animals/${id}`).then((response) => {
@@ -26,6 +35,7 @@ export function AnimalInfor(props: any) {
       setConservation(response.data.animal.conservation_status);
       setEcologicalFunction(response.data.animal.ecological_function);
       setUrlImage(response.data.animal.url_image);
+      setThreatCauses(response.data.animal.threat_causes);
     });
   }
 
@@ -34,34 +44,27 @@ export function AnimalInfor(props: any) {
   }, []);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.textSpecieName}>{specieName}</Text>
         <Image style={styles.imageAnimal} source={{ uri: urlImage }} />
-        <Text style={styles.text}>{name}</Text>
-        <Text style={styles.text}>{specieName}</Text>
-        <Text style={styles.text}>{size}</Text>
-
-        <Picker
-          style={styles.select}
-          selectedValue={conservation}
-          enabled={false}
-        >
-          <Picker.Item label="Extinto" value={"EXTINCT"} />
-          <Picker.Item label="Extinto na Selva" value={"EXTINCT_IN_THE_WILD"} />
-          <Picker.Item label="Perigo" value={"CRITICAL_ENDANGERED"} />
-          <Picker.Item label="Ameaçado" value={"ENDANGERED"} />
-          <Picker.Item label="Vulnerável" value={"VULNERABLE"} />
-          <Picker.Item label="Quase Ameaçado" value={"NEAR_THREATENED"} />
-          <Picker.Item label="Menor Precupação" value={"LEAST_CONCERN"} />
-          <Picker.Item label="Dados Deficientes" value={"DATA_DEFICIENT"} />
-          <Picker.Item label="Não Avaliado" value={"NOT_AVALUATED"} />
-        </Picker>
-
-        <Text
-          style={{ textAlignVertical: "top", ...styles.text }}
-        >
-          {ecologicalFunction}
+        <View style={styles.containerConservationStatus}>
+          <Point color={ConservationStatusColor[conservation].color} />
+          <Text style={styles.textConservationStatus}>
+            {ConservationStatusColor[conservation].name}
+          </Text>
+        </View>
+        <Text style={styles.textSize}>
+          tamanho médio: <Text style={styles.textBlue}>{size / 100}m</Text>
         </Text>
+        <Text style={styles.textEcologicalFunction}>{ecologicalFunction}</Text>
+        <Text style={styles.titleThreatCauses}>Causas de Ameaça:</Text>
+        <ScrollView horizontal style={styles.scrollViewThreatCauses}>
+          <View style={styles.contentThreatCauses}>
+        {threatCauses.map((cause, index) => (<View key={index} style={styles.viewThreatCauses}><Text>{cause}</Text></View>))}
+        </View>
+      </ScrollView>
       </View>
     </ScrollView>
   );
