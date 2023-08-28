@@ -12,18 +12,6 @@ export interface AnimalProps {
   infor: (id: number) => void;
 }
 
-const ConservationStatusColor = {
-  EXTINCT: "#ff0000",
-  EXTINCT_IN_THE_WILD: "#ff0000",
-  CRITICAL_ENDANGERED: "#ff0000",
-  ENDANGERED: "#ff0000",
-  VULNERABLE: "#ff0000",
-  NEAR_THREATENED: "#ff0000",
-  LEAST_CONCERN: "#ff0000",
-  DATA_DEFICIENT: "#ff0000",
-  NOT_AVALUATED: "#ff0000"
-}
-
 export function Animal({
   id,
   name,
@@ -42,7 +30,6 @@ export function Animal({
         <Text>{size}</Text>
         <View
           style={{
-            backgroundColor: ConservationStatusColor[convervation_status],
             ...styles.conservationContainer,
           }}
         >
