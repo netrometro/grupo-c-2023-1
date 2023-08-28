@@ -65,22 +65,7 @@ export async function createAnimalController(request: FastifyRequest, response: 
             threat_causes: causesArray
         })
 
-        const animalSchema = z.object({
-            id: z.number(),
-            size: z.number(),
-            name: z.string(),
-            specie_name: z.string(),
-            conservation_status: z.string(),
-            ecological_function: z.string(),
-            url_image: z.string(),
-            threat_causes: z.array(z.object({
-                description: z.string()
-            })).transform(threat_causes => threat_causes.map(cause => cause.description))
-        })
-
-        const retrievedAnimal = animalSchema.parse(animal.animal)
-
-        return response.code(201).send({ animal: retrievedAnimal });
+        return response.code(201).send({ animal });
     } catch (error) {
         if (error instanceof ErrorAnimalAlreadyExists) {
             return response.code(404).send({

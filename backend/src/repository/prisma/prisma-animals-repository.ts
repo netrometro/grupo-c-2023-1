@@ -4,15 +4,7 @@ import { Prisma } from "@prisma/client";
 
 export class AnimalRepository implements IAnimalsRepository {
     async findAll() {
-        const animals = await prisma.animal.findMany({
-            include: {
-                threat_causes: {
-                    select: {
-                        description: true
-                    }
-                }
-            }
-        });
+        const animals = await prisma.animal.findMany();
 
         return animals;
     }
@@ -46,14 +38,7 @@ export class AnimalRepository implements IAnimalsRepository {
 
     async create(animalDto: Prisma.AnimalCreateInput) {
         const animal = await prisma.animal.create({
-            data: animalDto,
-            include: {
-                threat_causes: {
-                    select: {
-                        description: true
-                    }
-                }
-            }
+            data: animalDto
         });
 
         return animal;

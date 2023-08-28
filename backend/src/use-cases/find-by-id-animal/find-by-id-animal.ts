@@ -1,9 +1,9 @@
-import { AnimalRepository } from "../../repository/prisma/prisma-animals-repository";
+import { IAnimalsRepository } from "../../repository/i-animals-repository";
 import { FindByIdAnimalUseCaseRequest, FindByIdAnimalUseCaseResponse } from "./dtos";
 import { ErrorAnimalNotExists } from "./erros";
 
 export class FindByIdAnimalUseCase {
-    constructor(private animalRepository: AnimalRepository) { }
+    constructor(private animalRepository: IAnimalsRepository) { }
 
     async handle({ animalId }: FindByIdAnimalUseCaseRequest): Promise<FindByIdAnimalUseCaseResponse> {
 

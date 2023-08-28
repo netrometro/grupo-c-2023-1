@@ -1,11 +1,12 @@
 import { randomBytes } from "crypto";
 import { supabase } from "../../infra/supabase";
-import { AnimalRepository } from "../../repository/prisma/prisma-animals-repository";
 import { CreateAnimalUseCaseRequest, CreateAnimalUseCaseResponse } from "./dtos";
 import { ErrorAnimalAlreadyExists } from "./errors";
+import { IAnimalsRepository } from "../../repository/i-animals-repository";
+import { generateFileName } from "../../utils/file";
 
 export class CreateAnimalUseCase {
-    constructor(private animalRepository: AnimalRepository) { }
+    constructor(private animalRepository: IAnimalsRepository) { }
 
     async handle({
         conservation_status,
@@ -22,7 +23,7 @@ export class CreateAnimalUseCase {
             throw new ErrorAnimalAlreadyExists();
         }
 
-        const fileName = randomBytes(10).toString('hex') + ".png"
+        const fileName = generateFileName(fileData.mimetype)
 
         await supabase.storage.from("balde-de-agua").upload(`animals/${fileName}`, fileData.file, {
             duplex: 'half',
