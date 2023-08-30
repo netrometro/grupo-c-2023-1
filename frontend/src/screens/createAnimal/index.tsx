@@ -8,14 +8,13 @@ import { api } from "../../api";
 import { AntDesign } from '@expo/vector-icons';
 
 export default function CreateAnimal(props: any) {
-
   const [name, set_name] = useState("");
   const [specie_name, set_specie_name] = useState("");
   const [size, set_size] = useState(0);
   const [conservation_status, set_conservation_status] =
     useState<ConservationStatus>("NOT_AVALUATED");
   const [ecological_function, set_ecological_function] = useState("");
-  const [threat_causes, set_threat_causes] = useState("");
+  const [threat_causes, set_threat_causes] = useState("Desmatamento,Poluição");
   const [url_image, set_url_image] = useState<ImagePicker.ImagePickerAsset>();
   console.log(props);
 
@@ -46,9 +45,9 @@ export default function CreateAnimal(props: any) {
     bodyformData.append("url_image", url_image?.base64!)
 
     await api.post("/animals", {name, specie_name, size, conservation_status, ecological_function, url_image})
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err))
   }
-
-
 
   return (
     <ScrollView>
@@ -71,6 +70,10 @@ export default function CreateAnimal(props: any) {
           onChangeText={set_specie_name}
           placeholder="Espécie"
         />
+
+        <Text>
+          TAMANHO EM CM
+        </Text>
         <TextInput
           style={styles.textInput}
           value={size.toString()}
@@ -95,12 +98,12 @@ export default function CreateAnimal(props: any) {
           <Picker.Item label="Não Avaliado" value={"NOT_AVALUATED"} />
         </Picker>
 
-        <TextInput
+        {/* <TextInput
           style={styles.textInput}
           value={threat_causes}
           onChangeText={set_threat_causes}
           placeholder="causas de ameaça"
-        />
+        /> */}
 
         <TextInput
           style={{ height: 128, textAlignVertical: "top", ...styles.textInput }}
