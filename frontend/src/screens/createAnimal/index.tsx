@@ -22,11 +22,13 @@ export default function CreateAnimal(props: any) {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        base64: true,
         quality: 1,
       });
 
       if (result.assets == null) {
       } else {
+        console.log(result.assets[0])
         set_url_image(result.assets[0]);
       }
     } catch (err) {
@@ -35,18 +37,20 @@ export default function CreateAnimal(props: any) {
   }
 
   async function createAnimal() {
-    let bodyformData = new FormData();
-    bodyformData.append("name", name)
-    bodyformData.append("specie_name", specie_name)
-    bodyformData.append("size", size.toString())
-    bodyformData.append("conservation_status", conservation_status)
-    bodyformData.append("ecological_function", ecological_function)
-    bodyformData.append("threat_causes", threat_causes)
-    bodyformData.append("url_image", url_image?.base64!)
-
-    await api.post("/animals", {name, specie_name, size, conservation_status, ecological_function, url_image})
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err))
+    await api.post("v2/animals", {
+      name,
+      specie_name,
+      size,
+      conservation_status,
+      ecological_function,
+      threat_causes,
+      image: url_image?.base64!
+    })
+      .then(res => {
+        console.log(res.data)
+        console.log(res.status)
+      })
+      .catch(err => console.log(err.response.data))
   }
 
   return (

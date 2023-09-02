@@ -7,7 +7,7 @@ export interface CreateAnimalUseCaseRequest {
     size: number
     conservation_status: ConservationStatus
     ecological_function: string
-    fileData: MultipartFile
+    fileData: MultipartFile | string
     threat_causes: string[]
 }
 

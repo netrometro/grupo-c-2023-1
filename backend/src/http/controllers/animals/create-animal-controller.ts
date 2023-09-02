@@ -73,5 +73,4 @@ export async function createAnimalController(request: FastifyRequest, response: 
             });
         }
     }
-
 }

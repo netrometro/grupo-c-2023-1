@@ -17,7 +17,7 @@ export function ListAnimals(props: any) {
   }
 
   async function findAllAnimals() {
-    await api.get("/animals").then(res => setAnimals(res.data.animals.animals))
+    await api.get("v1/animals").then(res => setAnimals(res.data.animals.animals))
   }
 
   useEffect(() => {
