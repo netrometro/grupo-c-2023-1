@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-import { AnimalRepository } from "../../repository/prisma/prisma-animals-repository";
-import { FindByIdAnimalUseCase } from "../../use-cases/find-by-id-animal/find-by-id-animal";
-import { ErrorAnimalNotExists } from "../../use-cases/find-by-id-animal/erros";
+import { AnimalRepository } from "../../../repository/prisma/prisma-animals-repository";
+import { FindByIdAnimalUseCase } from "../../../use-cases/find-by-id-animal/find-by-id-animal";
+import { ErrorAnimalNotExists } from "../../../use-cases/find-by-id-animal/erros";
 
 export async function findByIdAnimalController(request: FastifyRequest, response: FastifyReply) {
     const findByIdAnimalValidationSchema = z.object({

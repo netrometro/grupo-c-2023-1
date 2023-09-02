@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import { appRouter } from "./http/router";
+import { animalsRouter } from "./http/animals-router";
 import { ZodError } from "zod";
 import cors from "@fastify/cors";
 import fastifyMultipart from "@fastify/multipart";
@@ -13,7 +13,9 @@ app.register(fastifyMultipart, {
     }
 })
 
-app.register(appRouter)
+app.register(animalsRouter, {
+    prefix: "api/"
+})
 
 app.register(cors, { origin: true });
 
