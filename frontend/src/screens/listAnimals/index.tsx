@@ -13,7 +13,7 @@ export function ListAnimals(props: any) {
   } 
 
   function navigateToCreateAnimal() {
-    props.navigation.navigate("CreateAnimal");
+    props.navigation.navigate("CreateAnimal", { setAnimals, saia });
   }
 
   async function findAllAnimals() {

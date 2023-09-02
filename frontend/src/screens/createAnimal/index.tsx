@@ -1,5 +1,5 @@
 import { View, Image, TextInput, ScrollView, Text } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { styles } from "./styles";
 import { Button } from "../../components/button";
@@ -16,7 +16,8 @@ export default function CreateAnimal(props: any) {
   const [ecological_function, set_ecological_function] = useState("");
   const [threat_causes, set_threat_causes] = useState("Desmatamento,Poluição");
   const [url_image, set_url_image] = useState<ImagePicker.ImagePickerAsset>();
-  console.log(props);
+
+  console.log(props.navigation)
 
   async function openImagePicker() {
     try {
@@ -28,7 +29,6 @@ export default function CreateAnimal(props: any) {
 
       if (result.assets == null) {
       } else {
-        console.log(result.assets[0])
         set_url_image(result.assets[0]);
       }
     } catch (err) {
@@ -48,7 +48,20 @@ export default function CreateAnimal(props: any) {
     })
       .then(res => {
         console.log(res.data)
-        console.log(res.status)
+
+        const { setAnimals, saia } = props.route.params
+
+        setAnimals((state: any) => [...state, {
+          id: res.data.id,
+          name: res.data.name,
+          specie_name: res.data.specie_name,
+          size: res.data.size,
+          convervation_status: res.data.convervation_status,
+          url_image: res.data.url_image,
+          infor: saia,
+        }])
+
+        props.navigation.goBack()
       })
       .catch(err => console.log(err.response.data))
   }

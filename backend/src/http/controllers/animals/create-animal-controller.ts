@@ -12,7 +12,6 @@ export async function createAnimalController(request: FastifyRequest, response: 
         message: "Please, submit a file"
     })
 
-
     const createAnimalValidationFieldsSchema = z.object({
         name: z.object({
             mimetype: z.string().refine(mimetype => mimetype === "text/plain"),

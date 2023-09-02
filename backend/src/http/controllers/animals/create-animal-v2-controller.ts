@@ -30,7 +30,7 @@ export async function createAnimalV2Controller(request: FastifyRequest, response
         const animalRepository = new AnimalRepository();
         const createAnimalUseCase = new CreateAnimalUseCase(animalRepository);
 
-        const animal = await createAnimalUseCase.handle({
+        const { animal } = await createAnimalUseCase.handle({
             name,
             conservation_status,
             ecological_function,
@@ -40,7 +40,7 @@ export async function createAnimalV2Controller(request: FastifyRequest, response
             threat_causes
         })
 
-        return response.code(201).send({ animal });
+        return response.code(201).send(animal);
     } catch (error) {
         if (error instanceof ErrorAnimalAlreadyExists) {
             return response.code(404).send({
