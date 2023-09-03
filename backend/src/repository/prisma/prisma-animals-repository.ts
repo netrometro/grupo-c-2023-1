@@ -2,7 +2,7 @@ import { prisma } from "../../prisma";
 import { IAnimalsRepository } from "../i-animals-repository";
 import { Prisma } from "@prisma/client";
 
-export class AnimalRepository implements IAnimalsRepository {
+export class PrismaAnimalsRepository implements IAnimalsRepository {
     async findAll() {
         const animals = await prisma.animal.findMany();
 

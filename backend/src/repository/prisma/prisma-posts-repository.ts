@@ -1,10 +1,20 @@
 import { Post, Prisma } from "@prisma/client";
 import { prisma } from "../../prisma";
+import { IPostsRepository } from "../i-posts-repository";
 
-export class PostsRepository implements PostsRepository {
+export class PrismaPostsRepository implements IPostsRepository {
 
     async findAll(): Promise<Post[]> {
-        const posts = await prisma.post.findMany();
+        const posts = await prisma.post.findMany({
+            include: {
+                user: true,
+                _count: {
+                    select: {
+                        likes: true
+                    }
+                }
+            }
+        });
         return posts;
     }
 
@@ -12,10 +22,38 @@ export class PostsRepository implements PostsRepository {
         const post = await prisma.post.findUnique({
             where: {
                 id: postId
+            },
+            include: {
+                user: true,
+                _count: {
+                    select: {
+                        likes: true
+                    }
+                }
             }
         });
 
         return post;
+    }
+
+    async filterManyByTitle(title: string): Promise<Post[]> {
+        const posts = await prisma.post.findMany({
+            where: {
+                title: {
+                    contains: title,
+                    mode: "insensitive"
+                }
+            }, include: {
+                user: true,
+                _count: {
+                    select: {
+                        likes: true
+                    }
+                }
+            }
+        });
+
+        return posts;
     }
 
     async create(postDto: Prisma.PostUncheckedCreateInput): Promise<Post> {
@@ -34,17 +72,5 @@ export class PostsRepository implements PostsRepository {
         });
     }
 
-    async filterManyByTitle(title: string): Promise<Post[]> {
-        const posts = await prisma.post.findMany({
-            where: {
-                title: {
-                    contains: title,
-                    mode: "insensitive"
-                }
-            }
-        });
-
-        return posts;
-    }
 
 }
