@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { PrismaAnimalsRepository } from "../../repository/prisma/prisma-animals-repository";
-import { FindAllAnimalUseCase } from "../../use-cases/find-all-animal/find-all-animal-use-case";
+import { PrismaAnimalsRepository } from "../../../repository/prisma/prisma-animals-repository";
+import { FindAllAnimalUseCase } from "../../../use-cases/find-all-animal/find-all-animal-use-case";
 
-export async function findAllAnimalController(request: FastifyRequest, response: FastifyReply) {
+export async function findAllAnimalsController(request: FastifyRequest, response: FastifyReply) {
 
     const prismaAnimalsRepository = new PrismaAnimalsRepository();
     const findAllAnimalUseCase = new FindAllAnimalUseCase(prismaAnimalsRepository);

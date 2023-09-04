@@ -1,5 +1,5 @@
 # find all animals
-POST http://localhost:8080/animals
+POST http://localhost:8080/api/v1/animals  
 Content-Type: application/json
 
 {

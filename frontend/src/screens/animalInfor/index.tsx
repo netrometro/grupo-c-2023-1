@@ -28,7 +28,7 @@ export function AnimalInfor(props: any) {
   const [threatCauses, setThreatCauses] = useState([]);
 
   async function getAnimal() {
-    await api.get(`/animals/${id}`).then((response) => {
+    await api.get(`v1/animals/${id}`).then((response) => {
       setName(response.data.animal.name);
       setSize(response.data.animal.size);
       setSpecieName(response.data.animal.specie_name);

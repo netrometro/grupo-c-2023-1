@@ -1,7 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { PrismaPostsRepository } from "../../repository/prisma/prisma-posts-repository";
-import { FilterManyByTitlePostsUseCase } from "../../use-cases/filter-many-by-title-posts/filter-many-by-title-posts-use-case";
+
 import { z } from "zod";
+import { PrismaPostsRepository } from "../../../repository/prisma/prisma-posts-repository";
+import { FilterManyByTitlePostsUseCase } from "../../../use-cases/filter-many-by-title-posts/filter-many-by-title-posts-use-case";
 
 export async function filterManyByTitleController(request: FastifyRequest, response: FastifyReply) {
     const filterManyByTitleValidationSchema = z.object({

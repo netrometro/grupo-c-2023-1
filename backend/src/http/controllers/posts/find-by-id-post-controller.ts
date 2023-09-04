@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-import { PrismaPostsRepository } from "../../repository/prisma/prisma-posts-repository";
-import { FindByIdPostUseCase } from "../../use-cases/find-by-id-post/find-by-id-post-use-case";
-import { ErrorPostNotExists } from "../../use-cases/find-by-id-post/erros";
+import { PrismaPostsRepository } from "../../../repository/prisma/prisma-posts-repository";
+import { FindByIdPostUseCase } from "../../../use-cases/find-by-id-post/find-by-id-post-use-case";
+import { ErrorPostNotExists } from "../../../use-cases/find-by-id-post/erros";
 
 export async function findByIdPostController(request: FastifyRequest, response: FastifyReply) {
     const findByIdPostValidationSchema = z.object({

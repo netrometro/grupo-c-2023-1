@@ -1,9 +1,9 @@
 import { ConservationStatus } from "@prisma/client"
 import { FastifyRequest, FastifyReply } from "fastify"
 import { z } from "zod"
-import { PrismaAnimalsRepository } from "../../repository/prisma/prisma-animals-repository";
-import { CreateAnimalUseCase } from "../../use-cases/create-animal/create-animal-use-case";
-import { ErrorAnimalAlreadyExists } from "../../use-cases/create-animal/errors";
+import { PrismaAnimalsRepository } from "../../../repository/prisma/prisma-animals-repository";
+import { CreateAnimalUseCase } from "../../../use-cases/create-animal/create-animal-use-case";
+import { ErrorAnimalAlreadyExists } from "../../../use-cases/create-animal/errors";
 
 export async function createAnimalController(request: FastifyRequest, response: FastifyReply) {
     const data = await request.file()
@@ -11,7 +11,6 @@ export async function createAnimalController(request: FastifyRequest, response: 
     if (!data) return response.status(400).send({
         message: "Please, submit a file"
     })
-
 
     const createAnimalValidationFieldsSchema = z.object({
         name: z.object({
@@ -73,5 +72,4 @@ export async function createAnimalController(request: FastifyRequest, response: 
             });
         }
     }
-
 }

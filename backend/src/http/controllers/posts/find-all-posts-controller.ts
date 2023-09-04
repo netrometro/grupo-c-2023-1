@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { PrismaPostsRepository } from "../../repository/prisma/prisma-posts-repository";
-import { FindAllPostsUseCase } from "../../use-cases/find-all-posts/find-all-posts-use-case";
 import { z } from "zod";
+import { PrismaPostsRepository } from "../../../repository/prisma/prisma-posts-repository";
+import { FindAllPostsUseCase } from "../../../use-cases/find-all-posts/find-all-posts-use-case";
 
 
 export async function findAllPostsController(request: FastifyRequest, response: FastifyReply) {

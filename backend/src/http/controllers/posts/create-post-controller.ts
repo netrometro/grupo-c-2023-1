@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-import { PrismaPostsRepository } from "../../repository/prisma/prisma-posts-repository";
-import { CreatePostUseCase } from "../../use-cases/create-post/create-post-use-case";
+import { PrismaPostsRepository } from "../../../repository/prisma/prisma-posts-repository";
+import { CreatePostUseCase } from "../../../use-cases/create-post/create-post-use-case";
 
 export async function createPostController(request:FastifyRequest, response: FastifyReply) {
     const createPostValidationSchema = z.object({

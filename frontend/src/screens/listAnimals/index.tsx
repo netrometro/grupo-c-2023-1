@@ -13,11 +13,11 @@ export function ListAnimals(props: any) {
   } 
 
   function navigateToCreateAnimal() {
-    props.navigation.navigate("CreateAnimal");
+    props.navigation.navigate("CreateAnimal", { setAnimals, saia });
   }
 
   async function findAllAnimals() {
-    await api.get("/animals").then(res => setAnimals(res.data.animals.animals))
+    await api.get("v1/animals").then(res => setAnimals(res.data.animals.animals))
   }
 
   useEffect(() => {
