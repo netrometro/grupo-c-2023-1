@@ -3,6 +3,7 @@ import { IPostsRepository } from "../../repository/i-posts-repository";
 import { IUsersRepository } from "../../repository/i-users-repository";
 import { PostNotFoundError, UserNotFoundError } from "../global-errors";
 import { LikeDislikeUseCaseRequest, LikeDislikeUseCaseResponse } from "./dtos";
+import { AuthorCannotLikeYourPostError } from "./errors";
 
 export class LikeDislikeUseCase {
     constructor(
@@ -19,6 +20,10 @@ export class LikeDislikeUseCase {
 
         if (!post) {
             throw new PostNotFoundError()
+        }
+
+        if (userId === post.user_id) {
+            throw new AuthorCannotLikeYourPostError()
         }
 
         const user = await this.usersRepository.findById(userId)
