@@ -35,7 +35,7 @@ export function Post({ id, description, title, url_image, user, likes, infor }: 
               <AntDesign
                 name="heart" 
                 size={24} 
-                color="black"
+                color="red"
                 onPress={() => { setFakeLikes(state => state - 1) }}
               />
             :
