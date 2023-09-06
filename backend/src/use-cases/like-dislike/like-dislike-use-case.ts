@@ -36,6 +36,8 @@ export class LikeDislikeUseCase {
                 point: userFishCoins - 5
             })
 
+            await this.likesRepository.delete(userId, postId)
+
             return { isLiked }
         }
 
