@@ -21,17 +21,6 @@ export class LikeDislikeUseCase {
             throw new PostNotFoundError()
         }
 
-        const isLiked = !!(await this.likesRepository.find(userId, postId))
-
-        if (isLiked) {
-            return { isLiked }
-        }
-
-        await this.likesRepository.create({
-            post_id: postId,
-            user_id: userId
-        })
-
         const user = await this.usersRepository.findById(userId)
 
         if (!user) {
@@ -39,6 +28,21 @@ export class LikeDislikeUseCase {
         }
 
         const userFishCoins = user.point ?? 0
+
+        const isLiked = !!(await this.likesRepository.find(userId, postId))
+
+        if (isLiked) {
+            await this.usersRepository.update(userId, {
+                point: userFishCoins - 5
+            })
+
+            return { isLiked }
+        }
+
+        await this.likesRepository.create({
+            post_id: postId,
+            user_id: userId
+        })
 
         await this.usersRepository.update(userId, {
             point: userFishCoins + 5
