@@ -52,7 +52,7 @@ export function PostInfor(props: any) {
         <Text style={{ fontSize: 16, textAlign: "justify" }}>
           {description}
         </Text>
-        <Text> {likes} likes</Text>
+        {/* <Text> {likes} likes</Text> */}
       </View>
     </ScrollView>
   );
