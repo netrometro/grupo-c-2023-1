@@ -1,7 +1,7 @@
 import { ConservationStatus } from "@prisma/client"
 import { FastifyRequest, FastifyReply } from "fastify"
 import { z } from "zod"
-import { AnimalRepository } from "../../../repository/prisma/prisma-animals-repository";
+import { PrismaAnimalsRepository } from "../../../repository/prisma/prisma-animals-repository";
 import { CreateAnimalUseCase } from "../../../use-cases/create-animal/create-animal-use-case";
 import { ErrorAnimalAlreadyExists } from "../../../use-cases/create-animal/errors";
 
@@ -27,7 +27,7 @@ export async function createAnimalV2Controller(request: FastifyRequest, response
     } = createAnimalValidationSchema.parse(request.body);
 
     try {
-        const animalRepository = new AnimalRepository();
+        const animalRepository = new PrismaAnimalsRepository();
         const createAnimalUseCase = new CreateAnimalUseCase(animalRepository);
 
         const { animal } = await createAnimalUseCase.handle({
