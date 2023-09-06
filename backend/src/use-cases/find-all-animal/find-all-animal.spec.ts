@@ -26,7 +26,10 @@ describe("List all Animals", () => {
                     url_image: "https://imagem-mockada.png"
                 }
             ],
-            threat_causes: []
+            threat_causes: [],
+            likes: [],
+            posts: [],
+            users: []
         }
 
         const animalsRepository = new AnimalsInMemoryRepository(data)
