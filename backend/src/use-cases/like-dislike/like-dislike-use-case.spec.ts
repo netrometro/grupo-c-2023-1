@@ -10,6 +10,7 @@ import { PostsInMemoryRepository } from '../../repository/in-memory/posts-in-mem
 import { LikesInMemoryRepository } from '../../repository/in-memory/likes-in-memory-repository'
 import { LikeDislikeUseCase } from './like-dislike-use-case'
 import { AuthorCannotLikeYourPostError } from './errors'
+import { PostNotFoundError, UserNotFoundError } from '../global-errors'
 
 let data: InMemoryData
 let useCase: LikeDislikeUseCase
@@ -91,9 +92,15 @@ describe("Like or dislike Use Case", () => {
         ).rejects.toBeInstanceOf(AuthorCannotLikeYourPostError)
     })
 
-    it("should not be able to like yourself post", async () => {
+    it("should not be able to like a nonexistent post", async () => {
         await expect(() =>
-            useCase.handle({ postId: 1, userId: 2 }),
-        ).rejects.toBeInstanceOf(AuthorCannotLikeYourPostError)
+            useCase.handle({ postId: 10, userId: 2 }),
+        ).rejects.toBeInstanceOf(PostNotFoundError)
+    })
+
+    it("should not be able to like post with nonexistent user", async () => {
+        await expect(() =>
+            useCase.handle({ postId: 1, userId: 5 }),
+        ).rejects.toBeInstanceOf(UserNotFoundError)
     })
 })
