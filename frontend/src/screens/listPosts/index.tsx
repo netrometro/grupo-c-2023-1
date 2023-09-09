@@ -1,7 +1,9 @@
-import { FlatList, TextInput } from "react-native";
+import { FlatList, TextInput, View } from "react-native";
 import { Post, PostProps } from "../../components/post";
 import { useEffect, useState } from "react";
 import { api } from "../../api";
+import { ScreenHeader } from "../../components/screen-header";
+import { Entypo } from '@expo/vector-icons';
 
 export function ListPosts(props: any) {
   const [posts, setPosts] = useState<PostProps[]>([]);
@@ -36,7 +38,11 @@ export function ListPosts(props: any) {
   }, [search]);
 
   return (
-    <>
+    <View
+      style={{
+        flex: 1
+      }}
+    >
       {/* <TouchableOpacity
         style={{
           position: "absolute",
@@ -54,9 +60,15 @@ export function ListPosts(props: any) {
       >
         <AntDesign name="plus" size={32} color="black" />
       </TouchableOpacity> */}
+      <ScreenHeader 
+        text="Águas Blog"
+        leftIcon={{
+          icon: <Entypo name="menu" size={36} color="black" style={{ width: 30 }} />,
+          action: () => {}
+        }}
+      />
       <FlatList
         style={{
-          width: "100%",
           backgroundColor: "#0984E3",
           paddingHorizontal: 40
         }}
@@ -67,11 +79,11 @@ export function ListPosts(props: any) {
         )}
       />
       <TextInput
-          style={{ width: "90%", backgroundColor: "#fff", color: "#000", borderRadius: 16, padding: 12 }}
-          value={search}
-          onChangeText={setSearch}
-          placeholder="Buscar"
-        />
-    </>
+        style={{ width: "90%", backgroundColor: "#fff", color: "#000", borderRadius: 16, padding: 12 }}
+        value={search}
+        onChangeText={setSearch}
+        placeholder="Buscar"
+      />
+    </View>
   );
 }

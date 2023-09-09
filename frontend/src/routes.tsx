@@ -5,20 +5,24 @@ import { AnimalInfor } from "./screens/animalInfor";
 import { ListPosts } from "./screens/listPosts";
 import { PostInfor } from "./screens/postInfor";
 
-
 type RootParam = {
-    CreateAnimal: undefined;
-    Animais: undefined;
-    AnimalInfor: { id: number };
-    ListPosts: undefined;
-    PostInfor: { id: number };
+  CreateAnimal: undefined;
+  Animais: undefined;
+  AnimalInfor: { id: number };
+  ListPosts: undefined;
+  PostInfor: { id: number };
 }
 
-
 export function Routes() {
-    const {Group, Navigator, Screen} = createNativeStackNavigator<RootParam>();
+  const { Navigator, Screen } = createNativeStackNavigator<RootParam>();
+
   return (
-    <Navigator initialRouteName="ListPosts">
+    <Navigator 
+      initialRouteName="ListPosts"
+      screenOptions={{
+        headerShown: false
+      }}
+    >
       <Screen name="ListPosts" component={ListPosts} />
       <Screen name="PostInfor" component={PostInfor} /> 
       <Screen name="Animais" component={ListAnimals} />
