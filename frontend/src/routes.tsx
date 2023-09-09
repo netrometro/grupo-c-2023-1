@@ -17,6 +17,9 @@ type RootParam = {
 
 export function Routes() {
     const {Group, Navigator, Screen} = createNativeStackNavigator<RootParam>();
+
+    // teste
+
   return (
     <Navigator initialRouteName="ListPosts">
       <Screen name="ListPosts" component={ListPosts} />
