@@ -45,7 +45,10 @@ beforeEach(() => {
                 url_image: "https://imagem-mockada.png"
             },
         ],
-        threat_causes: []
+        threat_causes: [],
+        likes: [],
+        posts: [],
+        users: []
     }
 
     animalsRepository = new AnimalsInMemoryRepository(data)

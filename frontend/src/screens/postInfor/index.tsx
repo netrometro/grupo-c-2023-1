@@ -29,9 +29,11 @@ export function PostInfor(props: any) {
       <View
         style={{
           backgroundColor: "#fff",
-          padding: 6,
+          padding: 15,
           marginVertical: 20,
+          marginLeft: "5%",
           borderRadius: 16,
+          width: "90%",
         }}
       >
         <Text style={{ fontSize: 24, fontWeight: "bold", textAlign: "center" }}>
@@ -41,8 +43,8 @@ export function PostInfor(props: any) {
           source={{ uri: url_image }}
           style={{
             backgroundColor: "#fff",
-            width: 384,
-            height: 384,
+            width: 300,
+            height: 300,
             alignSelf: "center",
           }}
         />
@@ -52,7 +54,7 @@ export function PostInfor(props: any) {
         <Text style={{ fontSize: 16, textAlign: "justify" }}>
           {description}
         </Text>
-        <Text> {likes} likes</Text>
+        {/* <Text> {likes} likes</Text> */}
       </View>
     </ScrollView>
   );
