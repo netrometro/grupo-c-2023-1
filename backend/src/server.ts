@@ -1,10 +1,12 @@
 import fastify from "fastify";
 import { animalsRouter } from "./http/animals-router";
 import { ZodError } from "zod";
+import jwt from '@fastify/jwt';
 import cors from "@fastify/cors";
 import fastifyMultipart from "@fastify/multipart";
 import { env } from "./env";
 import { postsRouter } from "./http/posts-routes";
+import { authRoutes } from "./http/auth-router";
 
 const app = fastify()
 
@@ -12,6 +14,14 @@ app.register(fastifyMultipart, {
     limits: {
         fileSize: 100 ** 10
     }
+})
+
+app.register(jwt, {
+    secret: "001d75a5-ecf3-4b98-aa32-2073a6cf1838"
+});
+
+app.register(authRoutes, {
+    prefix: "api/"
 })
 
 app.register(animalsRouter, {
