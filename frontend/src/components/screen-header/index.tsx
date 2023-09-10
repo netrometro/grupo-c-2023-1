@@ -20,6 +20,7 @@ export function ScreenHeader({
                 width: "100%",
                 height: 50,
                 justifyContent: "space-between",
+                backgroundColor: "white",
                 alignItems: "center",
                 paddingHorizontal: 10,
                 flexDirection: "row"
@@ -28,7 +29,7 @@ export function ScreenHeader({
             {
                 <TouchableOpacity
                     style={{
-                        width: 15,
+                        width: 25,
                         alignItems: "center",
                         justifyContent: "center"
                     }}
