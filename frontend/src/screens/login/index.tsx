@@ -28,12 +28,12 @@ export function Login(props: any) {
 
   async function handleGithubOAuthCode(code: string) {
     console.log(code);
-    const response = await api.post("register", {
+    const response = await api.post("auth/register", {
       code,
     });
     const { token } = response.data;
     await SecureStore.setItemAsync("token", token);
-    props.navigation.navigate("ListAnimals");
+    props.navigation.goBack();
   }
 
   useEffect(() => {
