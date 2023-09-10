@@ -4,10 +4,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface ScreenHeaderProps {
     text: string
-    leftIcon: {
+    leftIcon?: {
         action: () => void,
         icon: React.ReactNode
-    },
+    }
 }
 
 export function ScreenHeader({
@@ -25,16 +25,18 @@ export function ScreenHeader({
                 flexDirection: "row"
             }}
         >
-            <TouchableOpacity
-                style={{
-                    width: 15,
-                    alignItems: "center",
-                    justifyContent: "center"
-                }}
-                onPress={leftIcon.action}
-            >
-                {leftIcon.icon}
-            </TouchableOpacity>
+            {
+                <TouchableOpacity
+                    style={{
+                        width: 15,
+                        alignItems: "center",
+                        justifyContent: "center"
+                    }}
+                    onPress={leftIcon?.action}
+                >
+                    {leftIcon?.icon}
+                </TouchableOpacity>
+            }
 
             <Text
                 style={{
