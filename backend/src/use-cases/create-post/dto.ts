@@ -4,7 +4,7 @@ export interface CreatePostUseCaseRequest {
     description: string;
     image: string;
     title: string;
-    // user_id: number;
+    userId: number;
 }
 
 export interface CreatePostUseCaseResponse {

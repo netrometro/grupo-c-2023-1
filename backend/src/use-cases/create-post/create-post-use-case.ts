@@ -1,28 +1,28 @@
-import { IAnimalsRepository } from "../../repository/i-animals-repository";
 import { IPostsRepository } from "../../repository/i-posts-repository";
 import { CreatePostUseCaseRequest, CreatePostUseCaseResponse } from "./dto";
 import { ErrorUserNotFound } from "./erros";
 import { supabase } from "../../infra/supabase";
 import { MultipartFile } from "@fastify/multipart";
 import { generateFileName } from "../../utils/file";
+import { IUsersRepository } from "../../repository/i-users-repository";
 
 export class CreatePostUseCase {
-    constructor(private postRepository: IPostsRepository) {}
+    constructor(private postRepository: IPostsRepository, private usersRepository: IUsersRepository) {}
 
-    async handle({ description, image, title }: CreatePostUseCaseRequest): Promise<CreatePostUseCaseResponse> {
+    async handle({ description, image, title, userId }: CreatePostUseCaseRequest): Promise<CreatePostUseCaseResponse> {
 
-        // const userAlreadyExists = !!(await this.usersRepository.findById());
+        const userAlreadyExists = !!(await this.usersRepository.findById(userId));
 
-        // if (userAlreadyExists) {
-        //     throw new ErrorUserNotFound();
-        // }
+        if (userAlreadyExists) {
+            throw new ErrorUserNotFound();
+        }
 
         const url_image = typeof image === "string" ? 
             await this.persistBase64Image(image) :
             await this.persistMultipartImage(image)
 
 
-        const post = await this.postRepository.create({description, url_image, title, user_id: 1 });
+        const post = await this.postRepository.create({description, url_image, title, user_id: userId });
         return {
             post
         }
