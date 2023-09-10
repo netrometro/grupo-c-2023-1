@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { signController } from "./controllers/auth/sign-controller";
 
 export async function authRoutes(app: FastifyInstance) {
-    app.post("/register", async (register, response) => {
+    app.post("/auth/register", async (register, response) => {
         const { user } = await signController(register, response);
 
         const token = app.jwt.sign({
@@ -13,6 +13,6 @@ export async function authRoutes(app: FastifyInstance) {
             expiresIn: "30 days",
         });
 
-        return response.send({token});
+        return response.send({ token });
     });
 }

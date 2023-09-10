@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { api } from "../../api";
 import { Point } from "../../components/point";
+import React from "react";
+import { ScreenHeader } from "../../components/screen-header";
+import { AntDesign } from '@expo/vector-icons';
 
 const ConservationStatusColor = {
   EXTINCT: { name: "Extinto", color: "#ff0000" },
@@ -45,6 +48,13 @@ export function AnimalInfor(props: any) {
 
   return (
     <ScrollView style={styles.container}>
+      <ScreenHeader 
+        text={name}
+        leftIcon={{
+          icon: <AntDesign name="arrowleft" size={30} color="black" />,
+          action: () => { props.navigation.goBack() }
+        }}
+      />
       <View style={styles.content}>
         <Text style={styles.title}>{name}</Text>
         <Text style={styles.textSpecieName}>{specieName}</Text>

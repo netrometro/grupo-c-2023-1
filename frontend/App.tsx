@@ -1,12 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import { Routes } from "./src/routes";
+import React from "react";
+import { StatusBar } from "react-native";
 
 export default function App() {
   return (
     <NavigationContainer>
-        <StatusBar style="auto" hidden />
-        <Routes />
-      </NavigationContainer>
+      <StatusBar 
+        barStyle={"light-content"}
+      />        
+      <Routes />
+    </NavigationContainer>
   );
 }

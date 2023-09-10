@@ -2,6 +2,8 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { PrismaPostsRepository } from "../../../repository/prisma/prisma-posts-repository";
 import { CreatePostUseCase } from "../../../use-cases/create-post/create-post-use-case";
+import { PrismaUsersRepository } from "../../../repository/prisma/prisma-users-repository";
+import { ErrorUserNotFound } from "../../../use-cases/create-post/erros";
 
 export async function createPostController(request:FastifyRequest, response: FastifyReply) {
     const createPostValidationSchema = z.object({
@@ -14,9 +16,10 @@ export async function createPostController(request:FastifyRequest, response: Fas
 
     try {
         const prismaPostsRepository = new PrismaPostsRepository();
-        const createPostUseCase = new CreatePostUseCase(prismaPostsRepository);
+        const prismaUsersRepository = new PrismaUsersRepository();
+        const createPostUseCase = new CreatePostUseCase(prismaPostsRepository, prismaUsersRepository);
 
-        const post = createPostUseCase.handle({ description, image, title});
+        const post = createPostUseCase.handle({ description, image, title, userId: z.number().parse(request.user.sub)});
 
         const postSchema = z.object({
             id: z.number(),
@@ -41,7 +44,11 @@ export async function createPostController(request:FastifyRequest, response: Fas
             }
         });
     } catch (error) {
-        
+        if (error instanceof ErrorUserNotFound) {
+            return response.code(404).send({
+                message: error.message
+            });
+        }
     }
     
 }

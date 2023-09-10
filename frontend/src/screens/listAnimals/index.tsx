@@ -1,12 +1,17 @@
-import { FlatList, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import { FlatList, TouchableOpacity } from "react-native";
 import { Animal, AnimalProps } from "../../components/animal";
 import { styles } from "./styles";
 import { useEffect, useState } from "react";
 import { api } from "../../api";
 import { AntDesign } from '@expo/vector-icons';
+import { DrawerProvider } from "../../components/drawer-menu";
+import { ScreenHeader } from "../../components/screen-header";
+import { Entypo } from '@expo/vector-icons';
 
 export function ListAnimals(props: any) {
   const [animals, setAnimals] = useState<AnimalProps[]>([]);
+  const [isOpenLeftMenu, setIsOpenLeftMenu] = React.useState(false);
 
   function saia(id:number) {
     props.navigation.navigate("AnimalInfor", {id});
@@ -17,7 +22,12 @@ export function ListAnimals(props: any) {
   }
 
   async function findAllAnimals() {
-    await api.get("v1/animals").then(res => setAnimals(res.data.animals.animals))
+    await api.get("v1/animals")
+      .then(res => {
+        console.log(res.data)
+        setAnimals(res.data.animals)
+      })
+      .catch(err => { console.log(err) })
   }
 
   useEffect(() => {
@@ -25,7 +35,12 @@ export function ListAnimals(props: any) {
   }, []);
 
   return (
-    <>
+    <DrawerProvider
+      navigate={props.navigation.navigate}
+      open={isOpenLeftMenu}
+      screen="Animals"
+      setOpen={setIsOpenLeftMenu}
+    >
       <TouchableOpacity
         style={{
           position: "absolute",
@@ -44,6 +59,13 @@ export function ListAnimals(props: any) {
       >
         <AntDesign name="plus" size={32} color="black" />
       </TouchableOpacity>
+      <ScreenHeader 
+        text="Catálogo de Animais"
+        leftIcon={{
+          icon: <Entypo name="menu" size={36} color="black" style={{ width: 30 }} />,
+          action: () => { setIsOpenLeftMenu(true) }
+        }}
+      />
       <FlatList
         style={styles.container}
         data={animals}
@@ -60,6 +82,6 @@ export function ListAnimals(props: any) {
           />
         )}
       />
-    </>
+    </DrawerProvider>
   );
 }
