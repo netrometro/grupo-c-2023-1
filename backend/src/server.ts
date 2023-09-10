@@ -20,6 +20,12 @@ app.register(jwt, {
     secret: "001d75a5-ecf3-4b98-aa32-2073a6cf1838"
 });
 
+app.addHook('preHandler', async (request) => {
+    if (request.routerPath !== "/api/auth/register") {
+        await request.jwtVerify();
+    }
+});
+
 app.register(authRoutes, {
     prefix: "api/"
 })

@@ -44,16 +44,21 @@ enum ConservationStatus {
 }
 
 model User {
-  id         Int     @id @default(autoincrement())
-  username   String  @unique
-  email      String  @unique
-  google_id  String  @unique
-  point      Int?
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  github_id  String   @unique
+  role       EnumRole
+  point      Int
   avatar_url String?
   posts      Post[]
   likes      Like[]
 
   @@map("users")
+}
+
+enum EnumRole {
+  ADMIN
+  USER
 }
 
 model Post {
@@ -62,8 +67,8 @@ model Post {
   description  String
   url_image    String?
   published_at DateTime?
-  user         User?     @relation(fields: [user_id], references: [id])
-  user_id      Int?
+  user         User      @relation(fields: [user_id], references: [id])
+  user_id      Int
   likes        Like[]
 
   @@map("posts")
