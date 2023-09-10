@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Alert } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -96,6 +96,18 @@ function renderLeftMenu(
           height: 60,
           borderBottomWidth: 2,
           borderBottomColor: "black"
+        }}
+        onPress={() => {
+          Alert.alert("Sair", "Deseja sair do App?", [
+            {
+              text: "Sim",
+              onPress: () => {}
+            },
+            {
+              text: "Não",
+              onPress: () => {}
+            }
+          ])
         }}
       >
         <Entypo name="log-out" size={28} color="white" />
