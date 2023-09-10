@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { EnumRole, Prisma } from "@prisma/client";
 import { IUsersRepository } from "../i-users-repository";
 import { prisma } from "../../prisma";
 
@@ -17,8 +17,8 @@ export class PrismaUsersRepository implements IUsersRepository {
     async create(userDTO: Prisma.UserCreateInput) {
         const user = await prisma.user.create({
             data: {
-                google_id: userDTO.google_id,
-                email: userDTO.email,
+                github_id: userDTO.github_id,
+                role: EnumRole.USER,
                 username: userDTO.username,
                 avatar_url: userDTO.avatar_url
             }
@@ -27,10 +27,10 @@ export class PrismaUsersRepository implements IUsersRepository {
         return user;
     }
 
-    async findByGoogleId(google_id: string) {
+    async findByGithubId(github_id: string) {
         const user = await prisma.user.findUnique({
             where: {
-                google_id
+                github_id
             }
     })
 
