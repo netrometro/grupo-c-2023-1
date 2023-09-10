@@ -5,6 +5,7 @@ import { api } from "../../api";
 import * as SecureStore from "expo-secure-store";
 import { useEffect } from "react";
 import { styles } from "./styles";
+import { AntDesign } from '@expo/vector-icons';
 
 const discovery = {
   authorizationEndpoint: "https://github.com/login/oauth/authorize",
@@ -45,6 +46,7 @@ export function Login(props: any) {
   return (
     <View style={styles.container}>
       <Button onPress={() => signInWithGithub()} style={styles.button} >
+        <AntDesign name="github" size={24} color="black" />
         <Text style={styles.textButton}>Casdastrar-se pelo github</Text>
         </Button>
     </View>
