@@ -18,7 +18,7 @@ export class PrismaUsersRepository implements IUsersRepository {
         const user = await prisma.user.create({
             data: {
                 github_id: userDTO.github_id,
-                role: EnumRole.USER,
+                role: userDTO.role,
                 username: userDTO.username,
                 avatar_url: userDTO.avatar_url
             }
