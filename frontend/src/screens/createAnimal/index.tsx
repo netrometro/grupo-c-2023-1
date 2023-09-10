@@ -6,6 +6,8 @@ import { Button } from "../../components/button";
 import * as ImagePicker from "expo-image-picker";
 import { api } from "../../api";
 import { AntDesign } from '@expo/vector-icons';
+import React from "react";
+import { ScreenHeader } from "../../components/screen-header";
 
 export default function CreateAnimal(props: any) {
   const [name, set_name] = useState("");
@@ -68,10 +70,14 @@ export default function CreateAnimal(props: any) {
 
   return (
     <ScrollView>
+      <ScreenHeader
+        text={"Criar Animal"}
+        leftIcon={{
+          icon: <AntDesign name="arrowleft" size={30} color="black" />,
+          action: () => { props.navigation.goBack() }
+        }}
+      />
       <View style={styles.container}>
-      <Button style={styles.buttonBack} onPress={() => {}}>
-          <AntDesign name="arrowleft" size={32} color="black" />
-        </Button>
         <Button onPress={openImagePicker}>
           <Image style={styles.imageAnimal} source={{ uri: url_image?.uri }} />
         </Button>

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { api } from "../../api";
+import { ScreenHeader } from "../../components/screen-header";
+import { AntDesign } from '@expo/vector-icons';
+import React from "react";
 
 export function PostInfor(props: any) {
   const id = props.route.params.id;
@@ -26,6 +29,13 @@ export function PostInfor(props: any) {
 
   return (
     <ScrollView style={{ backgroundColor: "#0984E3" }}>
+      <ScreenHeader 
+        text="Postagem"
+        leftIcon={{
+          icon: <AntDesign name="arrowleft" size={30} color="black" />,
+          action: () => { props.navigation.goBack() }
+        }}
+      />
       <View
         style={{
           backgroundColor: "#fff",
@@ -54,7 +64,6 @@ export function PostInfor(props: any) {
         <Text style={{ fontSize: 16, textAlign: "justify" }}>
           {description}
         </Text>
-        {/* <Text> {likes} likes</Text> */}
       </View>
     </ScrollView>
   );
