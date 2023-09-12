@@ -31,6 +31,8 @@ export class SignUseCase {
             }
         });
 
+        console.log(userResponse.data);
+
         const userSchema = z.object({
             id: z.number(),
             login: z.string(),
