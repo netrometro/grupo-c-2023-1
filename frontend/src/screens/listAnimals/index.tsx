@@ -19,7 +19,7 @@ export function ListAnimals(props: any) {
   }
 
   function navigateToCreateAnimal() {
-    props.navigation.navigate("CreateAnimal", { setAnimals, saia });
+    props.navigation.navigate("CreateAnimal");
   }
 
   async function findAllAnimals() {
@@ -44,8 +44,10 @@ export function ListAnimals(props: any) {
   }
 
   useEffect(() => {
+    props.navigation.addListener("focus", () => {
     findAllAnimals();
-  }, []);
+    });
+  }, [props.navigation]);
 
   return (
     <DrawerProvider

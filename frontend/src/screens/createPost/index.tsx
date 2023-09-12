@@ -55,20 +55,6 @@ export function CreatePost(props: any) {
           }
         )
         .then((res) => {
-          console.log(res.data);
-          const { setPosts } = props.route.params;
-
-          setPosts((state: any) => [
-            ...state,
-            {
-              id: res.data.post.id,
-              title: res.data.post.title,
-              description: res.data.post.description,
-              url_image: res.data.post.url_image,
-              user: res.data.post.user,
-              likes: res.data.post.likes,
-            },
-          ]);
           props.navigation.goBack();
         })
         .catch((err) => console.log("erro" + err.response.data));

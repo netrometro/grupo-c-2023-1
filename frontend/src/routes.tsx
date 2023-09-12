@@ -22,8 +22,8 @@ import { AntDesign } from "@expo/vector-icons";
 
 type RootParam = {
   Login: undefined;
-  CreateAnimal: undefined;
-  CreatePost: undefined;
+  CreateAnimal: { setAnimals: () => void; saia: (id: number) => void};
+  CreatePost: { setPosts: () => void; saia: (id: number) => void };
   Animais: undefined;
   AnimalInfor: { id: number };
   ListPosts: undefined;
@@ -39,14 +39,6 @@ const discovery = {
 
 export function Routes() {
   const { Navigator, Screen, Group } = createNativeStackNavigator<RootParam>();
-
-  async function handleGithubOAuthCode() {
-    SecureStore.deleteItemAsync("token");
-  }
-
-  useEffect(() => {
-    handleGithubOAuthCode();
-  }, []);
 
   return (
     <Navigator

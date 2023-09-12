@@ -21,16 +21,18 @@ export function ListPosts(props: any) {
   const [isOpenLeftMenu, setIsOpenLeftMenu] = React.useState(false);
 
   function navigateToCreatePost() {
-    props.navigation.navigate("CreatePost", { setPosts, saia });
+    props.navigation.navigate("CreatePost");
   }
 
   useEffect(() => {
-    if (search === "") {
-      findAllposts();
-    } else {
-      findBytitle(search);
-    }
-  }, [search]);
+    props.navigation.addListener("focus", () => {
+      if (search === "") {
+        findAllposts();
+      } else {
+        findBytitle(search);
+      }
+    });
+  }, [search, props.navigation]);
 
   function openLeftMenu() {
     setIsOpenLeftMenu(true);
@@ -54,7 +56,6 @@ export function ListPosts(props: any) {
         .catch((err) => console.log(err));
     } else {
       props.navigation.navigate("Login");
-      console.log("não autenticado");
     }
   }
 
@@ -66,12 +67,11 @@ export function ListPosts(props: any) {
         .get(`v1/posts/search?title=${search}`, {
           headers: {
             Authorization: `Bearer ${tokenInfor.token}`,
-          }
+          },
         })
         .then((res) => setPosts(res.data.posts));
     } else {
       props.navigation.navigate("Login");
-      console.log("não autenticado");
     }
   }
 
