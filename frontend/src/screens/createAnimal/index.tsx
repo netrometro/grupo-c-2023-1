@@ -5,9 +5,10 @@ import { styles } from "./styles";
 import { Button } from "../../components/button";
 import * as ImagePicker from "expo-image-picker";
 import { api } from "../../api";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import { ScreenHeader } from "../../components/screen-header";
+import { getAuthenticated } from "../../getAuthenticated";
 
 export default function CreateAnimal(props: any) {
   const [name, set_name] = useState("");
@@ -19,7 +20,7 @@ export default function CreateAnimal(props: any) {
   const [threat_causes, set_threat_causes] = useState("Desmatamento,Poluição");
   const [url_image, set_url_image] = useState<ImagePicker.ImagePickerAsset>();
 
-  console.log(props.navigation)
+  console.log(props.navigation);
 
   async function openImagePicker() {
     try {
@@ -39,33 +40,45 @@ export default function CreateAnimal(props: any) {
   }
 
   async function createAnimal() {
-    await api.post("v2/animals", {
-      name,
-      specie_name,
-      size,
-      conservation_status,
-      ecological_function,
-      threat_causes,
-      image: url_image?.base64!
-    })
-      .then(res => {
-        console.log(res.data)
+    const tokenInfor = await getAuthenticated();
+    tokenInfor.isAuthenticated;
+    if (tokenInfor.isAuthenticated) {
+      await api
+        .post("v2/animals", {
+          name,
+          specie_name,
+          size,
+          conservation_status,
+          ecological_function,
+          threat_causes,
+          image: url_image?.base64!,
+        }, {
+          headers: {
+            Authorization: `Bearer ${tokenInfor.token}`,
+          }
+        })
+        .then((res) => {
+          console.log(res.data);
 
-        const { setAnimals, saia } = props.route.params
+          const { setAnimals, saia } = props.route.params;
 
-        setAnimals((state: any) => [...state, {
-          id: res.data.id,
-          name: res.data.name,
-          specie_name: res.data.specie_name,
-          size: res.data.size,
-          convervation_status: res.data.convervation_status,
-          url_image: res.data.url_image,
-          infor: saia,
-        }])
+          setAnimals((state: any) => [
+            ...state,
+            {
+              id: res.data.id,
+              name: res.data.name,
+              specie_name: res.data.specie_name,
+              size: res.data.size,
+              convervation_status: res.data.convervation_status,
+              url_image: res.data.url_image,
+              infor: saia,
+            },
+          ]);
 
-        props.navigation.goBack()
-      })
-      .catch(err => console.log(err.response.data))
+          props.navigation.goBack();
+        })
+        .catch((err) => console.log(err.response.data));
+    }
   }
 
   return (
@@ -74,7 +87,9 @@ export default function CreateAnimal(props: any) {
         text={"Criar Animal"}
         leftIcon={{
           icon: <AntDesign name="arrowleft" size={30} color="black" />,
-          action: () => { props.navigation.goBack() }
+          action: () => {
+            props.navigation.goBack();
+          },
         }}
       />
       <View style={styles.container}>
@@ -94,9 +109,7 @@ export default function CreateAnimal(props: any) {
           placeholder="Espécie"
         />
 
-        <Text>
-          TAMANHO EM CM
-        </Text>
+        <Text>TAMANHO EM CM</Text>
         <TextInput
           style={styles.textInput}
           value={size.toString()}

@@ -1,10 +1,11 @@
-import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
+import { AuthRequestPromptOptions, AuthSessionResult, makeRedirectUri, useAuthRequest } from "expo-auth-session";
 import { Text, View } from "react-native";
 import { Button } from "../../components/button";
 import { api } from "../../api";
 import * as SecureStore from "expo-secure-store";
 import { useEffect } from "react";
 import { styles } from "./styles";
+import { useNavigation } from '@react-navigation/core';
 import { AntDesign } from '@expo/vector-icons';
 
 const discovery = {
@@ -15,6 +16,8 @@ const discovery = {
 };
 
 export function Login(props: any) {
+  const navgate = useNavigation();
+
   const [_, response, signInWithGithub] = useAuthRequest(
     {
       clientId: "808f466cb4a10d5d67f3",
@@ -31,9 +34,11 @@ export function Login(props: any) {
     const response = await api.post("auth/register", {
       code,
     });
+    props.navigation.navigate("ListPosts");
     const { token } = response.data;
     await SecureStore.setItemAsync("token", token);
-    props.navigation.goBack();
+    console.log(await SecureStore.getItemAsync("token"));
+    props.navigation.navigate("ListPosts");
   }
 
   useEffect(() => {
@@ -43,6 +48,7 @@ export function Login(props: any) {
       handleGithubOAuthCode(code);
     }
   }, [response]);
+
   return (
     <View style={styles.container}>
       <Button onPress={() => signInWithGithub()} style={styles.button} >

@@ -7,47 +7,61 @@ import { PostInfor } from "./screens/postInfor";
 import { useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import { Login } from "./screens/login";
-
+import { CreatePost } from "./screens/createPost";
+import * as AuthSession from "expo-auth-session";
+import { View, Text } from "react-native";
+import { Button } from "./components/button";
+import {
+  AuthRequestPromptOptions,
+  AuthSessionResult,
+  makeRedirectUri,
+  useAuthRequest,
+} from "expo-auth-session";
+import { api } from "./api";
+import { AntDesign } from "@expo/vector-icons";
 
 type RootParam = {
   Login: undefined;
   CreateAnimal: undefined;
+  CreatePost: undefined;
   Animais: undefined;
   AnimalInfor: { id: number };
   ListPosts: undefined;
   PostInfor: { id: number };
-}
+};
+
+const discovery = {
+  authorizationEndpoint: "https://github.com/login/oauth/authorize",
+  tokenEndpoint: "https://github.com/login/oauth/access_token",
+  revocationEndpoint:
+    "https://github.com/settings/connections/applications/808f466cb4a10d5d67f3",
+};
 
 export function Routes() {
   const { Navigator, Screen, Group } = createNativeStackNavigator<RootParam>();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  async function checkIfAuthenticated() {
-    const token = await SecureStore.getItemAsync("token");
-    setIsAuthenticated(!!token);
-    console.log(isAuthenticated);
+  async function handleGithubOAuthCode() {
+    SecureStore.deleteItemAsync("token");
   }
 
   useEffect(() => {
-    // SecureStore.deleteItemAsync("token");
-    checkIfAuthenticated();
-  }, [])
+    handleGithubOAuthCode();
+  }, []);
 
   return (
-    <Navigator 
+    <Navigator
+      initialRouteName="ListPosts"
       screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}
     >
-    {isAuthenticated?
-    <>
-
-    <Screen name="ListPosts" component={ListPosts} />
-    <Screen name="PostInfor" component={PostInfor} /> 
-    <Screen name="Animais" component={ListAnimals} />
-    <Screen name="CreateAnimal" component={CreateAnimal} />
-    <Screen name="AnimalInfor" component={AnimalInfor} />
-    </>: <Screen name="Login" component={Login} navigationKey="" /> }
+      <Screen name="ListPosts" component={ListPosts} />
+      <Screen name="PostInfor" component={PostInfor} />
+      <Screen name="Animais" component={ListAnimals} />
+      <Screen name="CreateAnimal" component={CreateAnimal} />
+      <Screen name="CreatePost" component={CreatePost} />
+      <Screen name="AnimalInfor" component={AnimalInfor} />
+      <Screen name="Login" component={Login} />
     </Navigator>
   );
 }

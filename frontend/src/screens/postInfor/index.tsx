@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { api } from "../../api";
 import { ScreenHeader } from "../../components/screen-header";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 import React from "react";
+import { getAuthenticated } from "../../getAuthenticated";
 
 export function PostInfor(props: any) {
   const id = props.route.params.id;
@@ -14,13 +15,23 @@ export function PostInfor(props: any) {
   const [likes, setLikes] = useState<number>(0);
 
   async function getPost() {
-    await api.get(`v1/posts/${id}`).then((response) => {
-      setTitle(response.data.post.title);
-      setDescription(response.data.post.description);
-      setUrl_image(response.data.post.url_image);
-      setUser(response.data.post.user);
-      setLikes(response.data.post.likes);
-    });
+    const tokenInfor = await getAuthenticated();
+    tokenInfor.isAuthenticated;
+    if (tokenInfor.isAuthenticated) {
+      await api
+        .get(`v1/posts/${id}`, {
+          headers: {
+            authorization: `Bearer ${tokenInfor.token}`,
+          },
+        })
+        .then((response) => {
+          setTitle(response.data.post.title);
+          setDescription(response.data.post.description);
+          setUrl_image(response.data.post.url_image);
+          setUser(response.data.post.user);
+          setLikes(response.data.post.likes);
+        });
+    }
   }
 
   useEffect(() => {
@@ -29,11 +40,13 @@ export function PostInfor(props: any) {
 
   return (
     <ScrollView style={{ backgroundColor: "#0984E3" }}>
-      <ScreenHeader 
+      <ScreenHeader
         text="Postagem"
         leftIcon={{
           icon: <AntDesign name="arrowleft" size={30} color="black" />,
-          action: () => { props.navigation.goBack() }
+          action: () => {
+            props.navigation.goBack();
+          },
         }}
       />
       <View

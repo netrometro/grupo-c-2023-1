@@ -5,7 +5,8 @@ import { api } from "../../api";
 import { Point } from "../../components/point";
 import React from "react";
 import { ScreenHeader } from "../../components/screen-header";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
+import { getAuthenticated } from "../../getAuthenticated";
 
 const ConservationStatusColor = {
   EXTINCT: { name: "Extinto", color: "#ff0000" },
@@ -31,15 +32,25 @@ export function AnimalInfor(props: any) {
   const [threatCauses, setThreatCauses] = useState([]);
 
   async function getAnimal() {
-    await api.get(`v1/animals/${id}`).then((response) => {
-      setName(response.data.animal.name);
-      setSize(response.data.animal.size);
-      setSpecieName(response.data.animal.specie_name);
-      setConservation(response.data.animal.conservation_status);
-      setEcologicalFunction(response.data.animal.ecological_function);
-      setUrlImage(response.data.animal.url_image);
-      setThreatCauses(response.data.animal.threat_causes);
-    });
+    const tokenInfor = await getAuthenticated();
+    tokenInfor.isAuthenticated;
+    if (tokenInfor.isAuthenticated) {
+      await api
+        .get(`v1/animals/${id}`, {
+          headers: {
+            Authorization: `Bearer ${tokenInfor.token}`,
+          },
+        })
+        .then((response) => {
+          setName(response.data.animal.name);
+          setSize(response.data.animal.size);
+          setSpecieName(response.data.animal.specie_name);
+          setConservation(response.data.animal.conservation_status);
+          setEcologicalFunction(response.data.animal.ecological_function);
+          setUrlImage(response.data.animal.url_image);
+          setThreatCauses(response.data.animal.threat_causes);
+        });
+    }
   }
 
   useEffect(() => {
@@ -48,11 +59,13 @@ export function AnimalInfor(props: any) {
 
   return (
     <ScrollView style={styles.container}>
-      <ScreenHeader 
+      <ScreenHeader
         text={name}
         leftIcon={{
           icon: <AntDesign name="arrowleft" size={30} color="black" />,
-          action: () => { props.navigation.goBack() }
+          action: () => {
+            props.navigation.goBack();
+          },
         }}
       />
       <View style={styles.content}>
@@ -72,9 +85,13 @@ export function AnimalInfor(props: any) {
         <Text style={styles.titleThreatCauses}>Causas de Ameaça:</Text>
         <ScrollView horizontal style={styles.scrollViewThreatCauses}>
           <View style={styles.contentThreatCauses}>
-        {threatCauses.map((cause, index) => (<View key={index} style={styles.viewThreatCauses}><Text>{cause}</Text></View>))}
-        </View>
-      </ScrollView>
+            {threatCauses.map((cause, index) => (
+              <View key={index} style={styles.viewThreatCauses}>
+                <Text>{cause}</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </View>
     </ScrollView>
   );
