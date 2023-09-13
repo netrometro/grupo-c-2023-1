@@ -2,6 +2,8 @@ import { Image, Text, View } from "react-native";
 import { Button } from "../button";
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from "react";
+import { getAuthenticated } from "../../getAuthenticated";
+import { api } from "../../api";
 
 export interface PostProps {
   id: number;
@@ -14,7 +16,24 @@ export interface PostProps {
 }
 
 export function Post({ id, description, title, url_image, user, likes, infor }: PostProps) {
-  const [fakeLikes, setFakeLikes] = useState(0)
+  const [fakeLikes, setFakeLikes] = useState(likes)
+  const [isLiked, setIsLiked] = useState(false)
+
+  async function likePost() {
+    const tokenInfor = await getAuthenticated();
+    tokenInfor.isAuthenticated;
+    if (tokenInfor.isAuthenticated) {
+      await api
+        .post(`v1/posts/${id}/likes`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenInfor.token}`
+          },
+        })
+        .then((res) => { console.log(res.data) })
+        .catch((err) => console.log(err));
+    }
+  }
 
   return (
     <Button onPress={() => infor(id)}>
@@ -31,19 +50,27 @@ export function Post({ id, description, title, url_image, user, likes, infor }: 
           }}
         >
           {
-            fakeLikes > 0 ?
+            isLiked ?
               <AntDesign
                 name="heart" 
                 size={24} 
                 color="red"
-                onPress={() => { setFakeLikes(state => state - 1) }}
+                onPress={() => {
+                  likePost()
+                  setIsLiked(false)
+                  setFakeLikes(state => state - 1)
+                }}
               />
             :
               <AntDesign
                 name="hearto" 
                 size={24} 
                 color="black" 
-                onPress={() => { setFakeLikes(state => state + 1) }}
+                onPress={() => {
+                  likePost()
+                  setIsLiked(true)
+                  setFakeLikes(state => state + 1)
+                }}
               />
           }
           <Text> {fakeLikes} likes</Text>

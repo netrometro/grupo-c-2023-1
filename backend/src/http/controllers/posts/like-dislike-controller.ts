@@ -8,10 +8,10 @@ import { PostNotFoundError } from "../../../use-cases/global-errors";
 
 export async function likeDislikeController(req: FastifyRequest, res: FastifyReply) {
     const likeDislikeValidationSchema = z.object({
-        postId: z.number().int()
+        id: z.number().int()
     })
 
-    const { postId } = likeDislikeValidationSchema.parse(req.body)
+    const { id } = likeDislikeValidationSchema.parse(req.params)
 
     try {
         const likesRepository = new PrismaLikesRepository()
@@ -19,7 +19,9 @@ export async function likeDislikeController(req: FastifyRequest, res: FastifyRep
         const usersRepository = new PrismaUsersRepository()
         const likeDislikeUseCase = new LikeDislikeUseCase(usersRepository, postsRepository, likesRepository)
 
-        const { isLiked } = await likeDislikeUseCase.handle({ postId, userId: 1 })
+        const userId = Number(req.user.sub)
+
+        const { isLiked } = await likeDislikeUseCase.handle({ postId: id, userId })
 
         const resBody = isLiked ? 
             {
