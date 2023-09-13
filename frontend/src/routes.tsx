@@ -4,21 +4,8 @@ import CreateAnimal from "./screens/createAnimal";
 import { AnimalInfor } from "./screens/animalInfor";
 import { ListPosts } from "./screens/listPosts";
 import { PostInfor } from "./screens/postInfor";
-import { useEffect, useState } from "react";
-import * as SecureStore from "expo-secure-store";
 import { Login } from "./screens/login";
 import { CreatePost } from "./screens/createPost";
-import * as AuthSession from "expo-auth-session";
-import { View, Text } from "react-native";
-import { Button } from "./components/button";
-import {
-  AuthRequestPromptOptions,
-  AuthSessionResult,
-  makeRedirectUri,
-  useAuthRequest,
-} from "expo-auth-session";
-import { api } from "./api";
-import { AntDesign } from "@expo/vector-icons";
 
 type RootParam = {
   Login: undefined;

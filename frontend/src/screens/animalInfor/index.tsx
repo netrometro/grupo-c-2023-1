@@ -9,15 +9,15 @@ import { AntDesign } from "@expo/vector-icons";
 import { getAuthenticated } from "../../getAuthenticated";
 
 const ConservationStatusColor = {
-  EXTINCT: { name: "Extinto", color: "#ff0000" },
-  EXTINCT_IN_THE_WILD: { name: "Extinto na Selva", color: "#ff0000" },
-  CRITICAL_ENDANGERED: { name: "Perigo", color: "#ff0000" },
-  ENDANGERED: { name: "Ameaçado", color: "#ff0000" },
-  VULNERABLE: { name: "Vulnerável", color: "#ff0000" },
-  NEAR_THREATENED: { name: "Quase Ameaçado", color: "#ff0000" },
-  LEAST_CONCERN: { name: "Menor Precupação", color: "#ff0000" },
-  DATA_DEFICIENT: { name: "Dados Deficientes", color: "#ff0000" },
-  NOT_AVALUATED: { name: "Não Avaliado", color: "#ff0000" },
+  EXTINCT: { name: "Extinto", color: "#8B0000" },
+  EXTINCT_IN_THE_WILD: { name: "Extinto na Selva", color: "#800000" },
+  CRITICAL_ENDANGERED: { name: "Perigo", color: "#990000" },
+  ENDANGERED: { name: "Ameaçado", color: "#E0115F" },
+  VULNERABLE: { name: "Vulnerável", color: "#DC143C" },
+  NEAR_THREATENED: { name: "Quase Ameaçado", color: "#D2691E" },
+  LEAST_CONCERN: { name: "Menor Precupação", color: "#FA8072" },
+  DATA_DEFICIENT: { name: "Dados Deficientes", color: "#858585" },
+  NOT_AVALUATED: { name: "Não Avaliado", color: "#000000" },
 };
 
 export function AnimalInfor(props: any) {
