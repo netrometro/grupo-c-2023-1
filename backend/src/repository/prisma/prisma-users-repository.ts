@@ -20,7 +20,8 @@ export class PrismaUsersRepository implements IUsersRepository {
                 github_id: userDTO.github_id,
                 role: EnumRole.USER,
                 username: userDTO.username,
-                avatar_url: userDTO.avatar_url
+                avatar_url: userDTO.avatar_url,
+                point: 0
             }
         })
 
