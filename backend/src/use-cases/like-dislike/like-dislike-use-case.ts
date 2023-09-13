@@ -37,7 +37,7 @@ export class LikeDislikeUseCase {
         const isLiked = !!(await this.likesRepository.find(userId, postId))
 
         if (isLiked) {
-            await this.usersRepository.update(userId, {
+            await this.usersRepository.update(post.user_id!, {
                 point: userFishCoins - 5
             })
 
@@ -51,7 +51,7 @@ export class LikeDislikeUseCase {
             user_id: userId
         })
 
-        await this.usersRepository.update(userId, {
+        await this.usersRepository.update(post.user_id!, {
             point: userFishCoins + 5
         })
 
