@@ -15,7 +15,7 @@ export function ListPosts(props: any) {
   const [search, setSearch] = useState<string>("");
   const [isOpenLeftMenu, setIsOpenLeftMenu] = React.useState(false);
 
-  const { setPoint, setUsername, username } = useContext(UserContext);
+  const { setPoint, setUsername, setAvatarUrl } = useContext(UserContext);
 
   function navigateToCreatePost() {
     props.navigation.navigate("CreatePost");
@@ -32,9 +32,9 @@ export function ListPosts(props: any) {
           },
         })
         .then((res) => {
-          console.log(res.data);
           setUsername(res.data.user.username);
-          setPoint(res.data.user.point);
+          setPoint(res.data.user.point ?? 0);
+          setAvatarUrl(res.data.user.avatar_url)
         })
         .catch((error) => {
           console.log(error);
@@ -44,9 +44,7 @@ export function ListPosts(props: any) {
 
   useEffect(() => {
     props.navigation.addListener("focus", () => {
-      if (username === "") {
-        getProfile();
-      }
+      getProfile();
       if (search === "") {
         findAllposts();
       } else {
