@@ -8,13 +8,9 @@ export async function profile(request: FastifyRequest, response: FastifyReply) {
         const usersRepository = new PrismaUsersRepository()
         const findUserByIdUseCase = new FindUserByIdUseCase(usersRepository)
 
-        const { user: { id, github_id, ...rest } } = await findUserByIdUseCase.handle({ userId: Number(request.user) })
+        const { user } = await findUserByIdUseCase.handle({ userId: Number(request.user.sub) })
 
-        return response.send({
-            user: {
-                ...rest
-            }
-        })
+        return response.send({user})
     } catch (error) {
         if (error instanceof UserNotFoundError) {
             return response.send({ message: error.message }).status(401)

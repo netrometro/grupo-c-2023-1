@@ -1,9 +1,4 @@
-import {
-  FlatList,
-  TextInput,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { FlatList, TextInput, View, TouchableOpacity } from "react-native";
 import { Post, PostProps } from "../../components/post";
 import { useContext, useEffect, useState } from "react";
 import { api } from "../../api";
@@ -20,29 +15,37 @@ export function ListPosts(props: any) {
   const [search, setSearch] = useState<string>("");
   const [isOpenLeftMenu, setIsOpenLeftMenu] = React.useState(false);
 
-  const {
-    setPoint,
-    setUsername,
-    username
-  } = useContext(UserContext)
+  const { setPoint, setUsername, username } = useContext(UserContext);
 
   function navigateToCreatePost() {
     props.navigation.navigate("CreatePost");
   }
 
   async function getProfile() {
-    await api.get("/auth/me")
-      .then(res => {
-        setUsername(res.data.user.username)
-        setPoint(res.data.user.point)
-      })
-      .catch(error => { console.log(error) })
+    const tokenInfor = await getAuthenticated();
+    tokenInfor.isAuthenticated;
+    if (tokenInfor.isAuthenticated) {
+      await api
+        .get("/auth/me", {
+          headers: {
+            Authorization: `Bearer ${tokenInfor.token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setUsername(res.data.user.username);
+          setPoint(res.data.user.point);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   useEffect(() => {
     props.navigation.addListener("focus", () => {
       if (username === "") {
-        getProfile()
+        getProfile();
       }
       if (search === "") {
         findAllposts();
