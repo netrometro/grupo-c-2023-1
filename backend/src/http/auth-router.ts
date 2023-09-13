@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { signController } from "./controllers/auth/sign-controller";
+import { profile } from "./controllers/auth/profile";
 
 export async function authRoutes(app: FastifyInstance) {
     app.post("/auth/register", async (register, response) => {
@@ -16,4 +17,6 @@ export async function authRoutes(app: FastifyInstance) {
 
         return response.send({ token });
     });
+
+    app.get("/auth/me", profile)
 }
