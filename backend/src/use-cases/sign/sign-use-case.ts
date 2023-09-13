@@ -42,12 +42,13 @@ export class SignUseCase {
 
         const userInfo = userSchema.parse(userResponse.data);
 
-        let user = await this.userRepository.findByGoogleId(userInfo.id.toString());
+        let user = await this.userRepository.findByGithubId(userInfo.id.toString());
 
         if(!user) {
             user = await this.userRepository.create({
-                username: userInfo.login, google_id: userInfo.id.toString(), avatar_url: userInfo.avatar_url,
-                email: userInfo.login
+                username: userInfo.login, github_id: userInfo.id.toString(), avatar_url: userInfo.avatar_url,
+                point: 0,
+                role: "USER",
             })
         }
 
