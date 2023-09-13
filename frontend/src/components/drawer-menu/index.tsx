@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, Alert } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import * as SecureStore from "expo-secure-store";
 
 interface DrawerProviderProps {
   screen: "Blog" | "Animals"
@@ -101,7 +102,11 @@ function renderLeftMenu(
           Alert.alert("Sair", "Deseja sair do App?", [
             {
               text: "Sim",
-              onPress: () => {}
+              onPress: async () => {
+                setIfOpenLeftMenu(false)
+                await SecureStore.deleteItemAsync("token")
+                navigate("ListPosts")
+              }
             },
             {
               text: "Não",
