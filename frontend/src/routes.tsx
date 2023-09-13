@@ -4,49 +4,43 @@ import CreateAnimal from "./screens/createAnimal";
 import { AnimalInfor } from "./screens/animalInfor";
 import { ListPosts } from "./screens/listPosts";
 import { PostInfor } from "./screens/postInfor";
-import { useContext } from "react"
-import { AuthContext } from "./contexts/auth"
-import React from "react";
 import { Login } from "./screens/login";
+import { CreatePost } from "./screens/createPost";
 
 type RootParam = {
-  CreateAnimal: undefined;
   Login: undefined;
+  CreateAnimal: { setAnimals: () => void; saia: (id: number) => void};
+  CreatePost: { setPosts: () => void; saia: (id: number) => void };
   Animais: undefined;
   AnimalInfor: { id: number };
   ListPosts: undefined;
   PostInfor: { id: number };
-}
+};
+
+const discovery = {
+  authorizationEndpoint: "https://github.com/login/oauth/authorize",
+  tokenEndpoint: "https://github.com/login/oauth/access_token",
+  revocationEndpoint:
+    "https://github.com/settings/connections/applications/808f466cb4a10d5d67f3",
+};
 
 export function Routes() {
-  const { Navigator, Screen } = createNativeStackNavigator<RootParam>();
-  const { isAuthenticated } = useContext(AuthContext)
+  const { Navigator, Screen, Group } = createNativeStackNavigator<RootParam>();
 
   return (
-    isAuthenticated ?
-
-    <Navigator 
+    <Navigator
       initialRouteName="ListPosts"
       screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}
     >
       <Screen name="ListPosts" component={ListPosts} />
-      <Screen name="PostInfor" component={PostInfor} /> 
+      <Screen name="PostInfor" component={PostInfor} />
       <Screen name="Animais" component={ListAnimals} />
       <Screen name="CreateAnimal" component={CreateAnimal} />
-      <Screen name="AnimalInfor" component={AnimalInfor} /> 
-    </Navigator>
-
-    :
-
-    <Navigator
-      initialRouteName="Login"
-      screenOptions={{
-        headerShown: false
-      }}
-    >
-      <Screen name="Login"component={Login} />
+      <Screen name="CreatePost" component={CreatePost} />
+      <Screen name="AnimalInfor" component={AnimalInfor} />
+      <Screen name="Login" component={Login} />
     </Navigator>
   );
 }

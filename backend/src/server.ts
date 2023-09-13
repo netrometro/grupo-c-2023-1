@@ -17,7 +17,7 @@ app.register(fastifyMultipart, {
 })
 
 app.register(jwt, {
-    secret: "001d75a5-ecf3-4b98-aa32-2073a6cf1838"
+    secret: "26452948404D635166546A576D5A7134743777217A25432A462D4A614E645267",
 });
 
 app.addHook('preHandler', async (request) => {
@@ -47,11 +47,13 @@ app.setErrorHandler((error, _, res) => {
         .send({ message: 'Validation error.', issues: error.format() })
     }
 
+    if (error.code === "FST_JWT_NO_AUTHORIZATION_IN_HEADER") {
+        return res.status(401).send({ message: 'Please, send a valid token.' })
+    }
+
     if (error.code === "FST_INVALID_MULTIPART_CONTENT_TYPE") {
         return res.status(406).send({ message: 'Please, use a form-data multipart.' })
     }
-
-    console.log(error)
 
     return res.status(500).send({ message: 'Internal server error.' })
 });

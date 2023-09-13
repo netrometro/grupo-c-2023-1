@@ -58,7 +58,15 @@ export class PrismaPostsRepository implements IPostsRepository {
 
     async create(postDto: Prisma.PostUncheckedCreateInput): Promise<Post> {
         const post = await prisma.post.create({
-            data: postDto
+            data: postDto,
+            include: {
+                user: true,
+                _count: {
+                    select: {
+                        likes: true
+                    }
+                }
+            }
         });
 
         return post;

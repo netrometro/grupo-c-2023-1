@@ -1,27 +1,41 @@
-import { FlatList, TextInput, View, Text } from "react-native";
+import {
+  FlatList,
+  TextInput,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Post, PostProps } from "../../components/post";
 import { useEffect, useState } from "react";
 import { api } from "../../api";
 import { ScreenHeader } from "../../components/screen-header";
-import { Entypo } from '@expo/vector-icons';
+import { Entypo } from "@expo/vector-icons";
 import React from "react";
 import { DrawerProvider } from "../../components/drawer-menu";
+import { AntDesign } from "@expo/vector-icons";
+import { getAuthenticated } from "../../getAuthenticated";
 
 export function ListPosts(props: any) {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [search, setSearch] = useState<string>("");
   const [isOpenLeftMenu, setIsOpenLeftMenu] = React.useState(false);
 
+  function navigateToCreatePost() {
+    props.navigation.navigate("CreatePost");
+  }
+
   useEffect(() => {
-    if (search === ""){
-    findAllposts();
-    } else {
+    props.navigation.addListener("focus", () => {
+      if (search === "") {
+        findAllposts();
+      } else {
         findBytitle(search);
-    }
-  }, [search]);
+      }
+    });
+  }, [search, props.navigation]);
 
   function openLeftMenu() {
-    setIsOpenLeftMenu(true)
+    setIsOpenLeftMenu(true);
   }
 
   function saia(id: number) {
@@ -29,15 +43,36 @@ export function ListPosts(props: any) {
   }
 
   async function findAllposts() {
-    await api
-      .get("v1/posts")
-      .then((res) => setPosts(res.data.posts));
+    const tokenInfor = await getAuthenticated();
+    tokenInfor.isAuthenticated;
+    if (tokenInfor.isAuthenticated) {
+      await api
+        .get("v1/posts", {
+          headers: {
+            Authorization: `Bearer ${tokenInfor.token}`,
+          },
+        })
+        .then((res) => setPosts(res.data.posts))
+        .catch((err) => console.log(err));
+    } else {
+      props.navigation.navigate("Login");
+    }
   }
 
   async function findBytitle(search: string) {
-    await api
-      .get(`v1/posts/search?title=${search}`)
-      .then((res) =>  setPosts(res.data.posts));
+    const tokenInfor = await getAuthenticated();
+    tokenInfor.isAuthenticated;
+    if (tokenInfor.isAuthenticated) {
+      await api
+        .get(`v1/posts/search?title=${search}`, {
+          headers: {
+            Authorization: `Bearer ${tokenInfor.token}`,
+          },
+        })
+        .then((res) => setPosts(res.data.posts));
+    } else {
+      props.navigation.navigate("Login");
+    }
   }
 
   return (
@@ -48,33 +83,61 @@ export function ListPosts(props: any) {
       screen="Blog"
     >
       <View
-      style={{
-        flex: 1
-      }}
+        style={{
+          flex: 1,
+        }}
       >
-        <ScreenHeader 
+        <ScreenHeader
           text="Águas Blog"
           leftIcon={{
-            icon: <Entypo name="menu" size={36} color="black" style={{ width: 30 }} />,
-            action: () => { openLeftMenu() }
+            icon: (
+              <Entypo
+                name="menu"
+                size={36}
+                color="black"
+                style={{ width: 30 }}
+              />
+            ),
+            action: () => {
+              openLeftMenu();
+            },
           }}
         />
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            left: "80%",
+            bottom: "10%",
+            backgroundColor: "red",
+            zIndex: 1000,
+            borderRadius: 50,
+            width: 50,
+            height: 50,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onPress={navigateToCreatePost}
+        >
+          <AntDesign name="plus" size={32} color="black" />
+        </TouchableOpacity>
         <FlatList
           style={{
             backgroundColor: "#0984E3",
-            paddingHorizontal: 40
+            paddingHorizontal: 40,
           }}
           data={posts}
           renderItem={({ index, item }) => (
-            <Post 
-              key={index} 
-              {...item} 
-              infor={saia}
-            />
+            <Post key={index} {...item} infor={saia} />
           )}
         />
         <TextInput
-          style={{ width: "90%", backgroundColor: "#fff", color: "#000", borderRadius: 16, padding: 12 }}
+          style={{
+            width: "90%",
+            backgroundColor: "#fff",
+            color: "#000",
+            borderRadius: 16,
+            padding: 12,
+          }}
           value={search}
           onChangeText={setSearch}
           placeholder="Buscar"
