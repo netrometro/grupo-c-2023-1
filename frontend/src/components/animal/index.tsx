@@ -26,14 +26,14 @@ export function Animal({
       <Image source={{ uri: url_image }} style={styles.animalImage} />
       <View style={styles.content}>
         <Text>{name}</Text>
-        <Text>{specie_name}</Text>
-        <Text>{size}</Text>
+        <Text>Espécie: {specie_name}</Text>
+        <Text>{size / 100}m</Text>
         <View
           style={{
             ...styles.conservationContainer,
           }}
         >
-          <Text>{convervation_status}</Text>
+          <Text style={{ fontWeight: "bold", color: "red" }}>{convervation_status}</Text>
         </View>
         <Button style={styles.knowMore} onPress={() => infor(id)}>
           <Text>saiba mais...</Text>
