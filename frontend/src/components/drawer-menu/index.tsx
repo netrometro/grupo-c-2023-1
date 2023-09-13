@@ -4,6 +4,8 @@ import { Drawer } from 'react-native-drawer-layout';
 import { Feather } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import * as SecureStore from "expo-secure-store";
+import { Image } from 'expo-image';
+import { UserContext } from '../../contexts/user';
 
 interface DrawerProviderProps {
   screen: "Blog" | "Animals"
@@ -18,6 +20,10 @@ function renderLeftMenu(
   setIfOpenLeftMenu: (open: boolean) => void,
   navigate: (screen: string) => void
 ) {
+  const {
+    avatar_url, username, clearContext
+  } = React.useContext(UserContext);
+
   return (
     <View
       style={{
@@ -26,6 +32,38 @@ function renderLeftMenu(
       }}
     >
       <View>
+        <View
+          style={{
+            height: 80,
+            marginBottom: 15,
+            padding: 8,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 5,
+            borderBottomWidth: 2,
+            borderBottomColor: "black"
+          }}
+        >
+          <Image
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 50,
+              borderWidth: 2,
+              borderColor: "blue"
+            }}
+            source={avatar_url}
+          />
+
+          <Text
+            style={{
+              fontWeight: "bold"
+            }}
+          >
+            {username}
+          </Text>
+        </View>
+
         <TouchableOpacity
           style={{
             backgroundColor: screen === "Blog" ? "blue" : "#313131",
@@ -104,6 +142,7 @@ function renderLeftMenu(
               text: "Sim",
               onPress: async () => {
                 setIfOpenLeftMenu(false)
+                clearContext()
                 await SecureStore.deleteItemAsync("token")
                 navigate("ListPosts")
               }
