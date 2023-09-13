@@ -24,14 +24,13 @@ export function Post({ id, description, title, url_image, user, likes, infor }: 
     tokenInfor.isAuthenticated;
     if (tokenInfor.isAuthenticated) {
       await api
-        .post(`v1/posts/${id}/likes`, {
+        .post(`v1/posts/${id}/likes`, {}, {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenInfor.token}`
+            Authorization: `Bearer ${tokenInfor.token}`,
           },
         })
         .then((res) => { console.log(res.data) })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err.response));
     }
   }
 
