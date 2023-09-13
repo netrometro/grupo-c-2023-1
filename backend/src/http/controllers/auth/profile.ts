@@ -11,7 +11,9 @@ export async function profile(request: FastifyRequest, response: FastifyReply) {
         const { user: { id, github_id, ...rest } } = await findUserByIdUseCase.handle({ userId: Number(request.user) })
 
         return response.send({
-            ...rest
+            user: {
+                ...rest
+            }
         })
     } catch (error) {
         if (error instanceof UserNotFoundError) {

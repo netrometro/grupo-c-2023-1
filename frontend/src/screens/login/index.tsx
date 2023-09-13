@@ -5,11 +5,8 @@ import { api } from "../../api";
 import * as SecureStore from "expo-secure-store";
 import { useEffect } from "react";
 import { styles } from "./styles";
-import { useNavigation } from '@react-navigation/core';
 import { AntDesign } from '@expo/vector-icons';
 import React from "react";
-import { useContext } from "react"
-import { AuthContext } from "../../contexts/auth"
 
 const discovery = {
   authorizationEndpoint: "https://github.com/login/oauth/authorize",
@@ -19,8 +16,6 @@ const discovery = {
 };
 
 export function Login(props: any) {
-  const navgate = useNavigation();
-
   const [_, response, signInWithGithub] = useAuthRequest(
     {
       clientId: "808f466cb4a10d5d67f3",

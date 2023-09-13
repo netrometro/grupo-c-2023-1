@@ -6,6 +6,7 @@ import { ListPosts } from "./screens/listPosts";
 import { PostInfor } from "./screens/postInfor";
 import { Login } from "./screens/login";
 import { CreatePost } from "./screens/createPost";
+import React from "react";
 
 type RootParam = {
   Login: undefined;

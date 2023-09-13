@@ -2,11 +2,10 @@ import {
   FlatList,
   TextInput,
   View,
-  Text,
   TouchableOpacity,
 } from "react-native";
 import { Post, PostProps } from "../../components/post";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { api } from "../../api";
 import { ScreenHeader } from "../../components/screen-header";
 import { Entypo } from "@expo/vector-icons";
@@ -14,18 +13,37 @@ import React from "react";
 import { DrawerProvider } from "../../components/drawer-menu";
 import { AntDesign } from "@expo/vector-icons";
 import { getAuthenticated } from "../../getAuthenticated";
+import { UserContext } from "../../contexts/user";
 
 export function ListPosts(props: any) {
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [search, setSearch] = useState<string>("");
   const [isOpenLeftMenu, setIsOpenLeftMenu] = React.useState(false);
 
+  const {
+    setPoint,
+    setUsername,
+    username
+  } = useContext(UserContext)
+
   function navigateToCreatePost() {
     props.navigation.navigate("CreatePost");
   }
 
+  async function getProfile() {
+    await api.get("/auth/me")
+      .then(res => {
+        setUsername(res.data.user.username)
+        setPoint(res.data.user.point)
+      })
+      .catch(error => { console.log(error) })
+  }
+
   useEffect(() => {
     props.navigation.addListener("focus", () => {
+      if (username === "") {
+        getProfile()
+      }
       if (search === "") {
         findAllposts();
       } else {

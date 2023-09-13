@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { UserContext } from "../../contexts/user";
 
 interface ScreenHeaderProps {
     text: string
@@ -14,6 +15,8 @@ export function ScreenHeader({
     leftIcon,
     text
 }: ScreenHeaderProps) {
+    const { point } = useContext(UserContext)
+
     return (
         <View
             style={{
@@ -61,7 +64,7 @@ export function ScreenHeader({
                         fontWeight: "bold"
                     }}
                 >
-                    150
+                    {point}
                 </Text>
             </View>
         </View>
