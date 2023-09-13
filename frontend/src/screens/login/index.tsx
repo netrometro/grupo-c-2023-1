@@ -29,7 +29,7 @@ export function Login(props: any) {
 
   async function handleGithubOAuthCode(code: string) {
     console.log(code);
-    const response = await api.post("register", {
+    const response = await api.post("auth/register", {
       code,
     });
     props.navigation.navigate("ListPosts");

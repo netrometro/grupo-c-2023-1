@@ -144,7 +144,7 @@ function renderLeftMenu(
                 setIfOpenLeftMenu(false)
                 clearContext()
                 await SecureStore.deleteItemAsync("token")
-                navigate("ListPosts")
+                navigate("Login")
               }
             },
             {
